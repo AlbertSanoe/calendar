@@ -1,5 +1,3 @@
-# calendar
-
 # DRAFT
 
 ## KEYWORD

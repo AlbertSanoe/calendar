@@ -1,0 +1,183 @@
+第三次实验报告
+
+本次是第三次实训的报告，时间紧张的情况依然没有改善，而且本周由于复习下星期的考试和各种事项的准备，
+编码的时间也比较短。本次报告主要写这星期的一些思考和研究。
+
+其实这个想法在看到这个项目的时候就产生了，那就是，我是否能不使用图形化界面的各种按钮作为用户交互的工具，
+而把一个代码文档作为用户交互的工具呢？我的想法是，如果用户需要提前设置好本星期的任务，在某前提下，执行
+对应的动作，在某条件下却不执行，那么它不就是跟写代码有类似之处吗？基于这样的思考，我大致的思考是：
+首先用户会书写一系列他的周计划或者月计划，然后用某种范式写在一个文档中，然后用户的另一个文本是这周的某些情况和特征
+况，然后根据这两个文本，得出一个具体的计划。
+
+其实我还有听多细节没有完全弄明白，这就需要不断的摸索和探究。我首先以之前实现的cal的子程序，通过它为引子
+写出了建立在这个程序之上的一些描述式子，这些描述式子就是之后我拿来设计解析语言剩下部分的参照物。
+
+digit_one_to_nine :=
+    "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+ 
+digit := 
+    "0" | digit_one_to_nine;
+
+second :=
+    digit
+    | ( "1" | "2" | "3" | "4" | "5"), digit
+    | "60";
+
+minute :=
+    digit
+    | ( "1" | "2" | "3" | "4" | "5"), digit
+    | "60";
+
+hour :=
+    digit_one_to_nine
+    | "1", digit
+    | "2", ("0" | "1" | "2" | "3");
+
+digit_one_to_nine：表示一位非零数字（1-9）。
+示例：5
+
+digit：表示一位数字（0-9）。
+示例：8
+
+second：表示一位或两位的秒数（范围：00-60）。
+示例：23
+
+minute：表示一位或两位的分钟数（范围：00-60）。
+示例：45
+
+hour：表示一位或两位的小时数（范围：00-23）。
+示例：14
+
+
+year_digit := digit_one_to_nine, [digit], [digit], [digit];
+
+day_digit :=
+    digit_one_to_nine
+    | "1", digit
+    | "2", ("0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9")
+    | "3", ("0" | "1");
+
+year_digit：表示以非零数字开头的一位到四位数的年份。
+示例：2021
+
+day_digit :=
+digit_one_to_nine
+| "1", digit
+| "2", ("0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9")
+| "3", ("0" | "1");
+
+month_digit :=
+digit_one_to_nine
+| "1", ("0" | "1" | "2");
+
+day_digit：表示一位或两位数的天数（范围：01-31）。
+示例：12
+
+month_digit：表示一位或两位数的月份（范围：01-12）。
+示例：09
+
+month_string :=
+"January" |
+"February" |
+"March" |
+"April" |
+"May" |
+"June" |
+"July" |
+"August" |
+"September" |
+"October" |
+"November" |
+"Decemeber";
+
+month_string_abbr3 :=
+"Jan" | "Feb" | "Mar" | "Apr" | "May" | "Jun" |
+"Jul" | "Aug" | "Sep" | "Oct" | "Nov" | "Dec";
+
+month_string：表示月份的完整英文名称。
+示例：January
+
+month_string_abbr3：表示月份的三个字母缩写。
+示例：Jan
+
+weekday_digit :=
+"0" | "1" | "2" | "3" | "4" | "5" | "6";
+
+weekday_string :=
+"Sunday" |
+"Monday" |
+"Tuesday" |
+"Wednesday" |
+"Thursday" |
+"Friday" |
+"Saturday";
+
+weekday_string_abbr3 :=
+"Sun" | "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat";
+
+weekday_digit：表示一周中的某一天，用数字表示（范围：0-6，0表示周日，1表示周一，以此类推）。
+示例：3
+
+weekday_string：表示一周中的某一天的完整英文名称。
+示例：Wednesday
+
+weekday_string_abbr3：表示一周中的某一天的三个字母缩写。
+示例：Wed
+
+cal_time :=
+[year_digit] , "-" , ( month_digit | month_string | month_string_abbr3 ), "-" ,
+day_digit , [ "-" , ( weekday_digit | weekday_string | weekday_string_abbr3 ) ];
+
+exact_time := hour , ":" , minute , ":" , second;
+
+space := " ";
+
+time := [cal_time, space], exact_time;
+
+cal_time：表示日期，可选包括年份、月份（数字、完整英文名称或缩写）、日期和星期（数字、完整英文名称或缩写）。
+示例：2021-May-27-Thu
+
+exact_time：表示精确时间，格式为小时:分钟:秒钟。
+示例：14:45:23
+
+space：表示一个空格字符。
+示例： 
+
+time：表示完整的日期和时间字符串，由日期和精确时间组成，中间用空格分隔。
+示例：2021-May-27 14:45:23
+
+letter :=
+"A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" |
+"N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" |
+"a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" |
+"n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z";
+
+allowed_char := letter | digit | space;
+
+allowed_string := """, allowed_char {allowed_char}, """;
+
+place := "PLACE", allowed_string;
+
+arrangement := "ARRANGE" , allowed_string;
+
+person := "PERSON", allowed_string;
+
+letter：表示一个英文字母（大写或小写）。
+示例：A 或 m
+
+allowed_char：表示一个允许的字符，包括英文字母、数字和空格。
+示例：R 或 7 或  
+
+allowed_string：表示一个由允许的字符组成的字符串，用双引号括起来。
+示例："Hello World"
+
+place：表示一个地点，由关键字PLACE和一个允许的字符串组成。
+示例：PLACE"New York"
+
+arrangement：表示一个安排，由关键字ARRANGE和一个允许的字符串组成。
+示例：ARRANGE"Meeting"
+
+person：表示一个人，由关键字PERSON和一个允许的字符串组成。
+示例：PERSON"Alice"
+
+
