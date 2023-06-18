@@ -3,7 +3,7 @@
 /* the test main function */
 int main(){
     TEST_STARTFUNCTION;
-    test_cal3();
+    test_terminal1();
     TEST_ENDFUNCTION;
     return 0;
 }

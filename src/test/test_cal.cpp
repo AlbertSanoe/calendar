@@ -17,13 +17,6 @@ void test_cal1()
     TEST_ENDFUNCTION;
 }
 
-void test_cal2()
-{
-    TEST_STARTFUNCTION;
-    TEST_WRAPPER(str1, Calendar::test_str());
-    TEST << str1 << std::endl;
-    TEST_ENDFUNCTION;
-}
 
 void test_cal3()
 {

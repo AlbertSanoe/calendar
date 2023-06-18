@@ -90,12 +90,12 @@ const int day_val_in_month_common[13] = {
     31  // December
 };
 
+Time::Time(Hour hr, Minute min, Second sec)
+    : hour(hr), minute(min), second(sec) {}
+
 /* the construction function of the class Date */
 Date::Date(Year val, Month mm, Day dd)
-    : year(val), month(mm), day(dd)
-{
-    this->weekday = 0;
-}
+    : year(val), month(mm), day(dd), weekday(0){}
 
 /* the construction function of the class Date, with the weekday value */
 Date::Date(Year val, Month mm, Day dd, Weekday ww)
@@ -316,6 +316,20 @@ bool Calendar::has_header_on_month()
 
 const std::string wds_str = "Su Mo Tu We Th Fr Sa";
 
+const std::string wds_long_str[7]={
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+};
+
+const std::string Date::get_weekday_str() const{
+    return wds_long_str[this->weekday];
+}
+
 const std::string day_in_month_str = " 1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31";
 
 const std::string month_str[13] = {
@@ -467,14 +481,14 @@ static std::string __weekday_generate(int month_per_line)
     return wds;
 }
 
-/* 
-* @brief            the function is to generate a month figure to display in terminal 
-* @param yy_mm_1    it is to tell the specific value of the year and month, day value is 
-*                   assigned to 1
-* @param row        it is to tell the position of the month in the terminal
-* @param column     it is to tell the position of the month in the terminal
-* @param has_header it is to tell whether it is necessary to print the year value
-*/
+/*
+ * @brief            the function is to generate a month figure to display in terminal
+ * @param yy_mm_1    it is to tell the specific value of the year and month, day value is
+ *                   assigned to 1
+ * @param row        it is to tell the position of the month in the terminal
+ * @param column     it is to tell the position of the month in the terminal
+ * @param has_header it is to tell whether it is necessary to print the year value
+ */
 int Calendar::month_generate(Date *const yy_mm_1, int row, int column, bool has_header)
 {
 
@@ -614,11 +628,11 @@ int Calendar::month_generate(Date *const yy_mm_1, int row, int column, bool has_
         int last_day = day_for_Saturday < last_mday ? day_for_Saturday : last_mday;
 
         int last_index_included = REAR_INDEX(last_day);
-// #ifdef TRY_DEBUG
+        // #ifdef TRY_DEBUG
 
-//         DEBUG("first index:        %d\n", first_index);
-//         DEBUG("last index_included:%d\n", last_index_included);
-// #endif
+        //         DEBUG("first index:        %d\n", first_index);
+        //         DEBUG("last index_included:%d\n", last_index_included);
+        // #endif
         if (first_day_line == first_mday)
         {
             std::string placeholder_str(placeholder, ' ');
@@ -648,7 +662,6 @@ int Calendar::month_generate(Date *const yy_mm_1, int row, int column, bool has_
     return weekday_last_day;
 }
 
-/// @brief
 void Calendar::generate()
 {
 
@@ -766,9 +779,4 @@ Calendar *Calendar::get_cal(Month *month, Year *year, int *after, int *before)
         Calendar::instance->before = *before;
         return Calendar::instance;
     }
-}
-
-std::string Calendar::test_str()
-{
-    return __weekday_generate(2);
 }

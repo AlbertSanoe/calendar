@@ -2,13 +2,13 @@
 
 std::ostream &operator<<(std::ostream &out, const Date &obj)
 {
-    out << "{" << obj.year << "." << obj.month << "." << obj.day << " " << obj.weekday << "}";
+    out << obj.year << "." << obj.month << "." << obj.day << " " << obj.get_weekday_str();
     return out;
 }
 
 std::ostream &operator<<(std::ostream &out, const Time &obj)
 {
-    out << "{" << obj.hour << "-" << obj.minute << "-" << obj.second << "}";
+    out << obj.hour << ":" << obj.minute << ":" << obj.second;
     return out;
 }
 
@@ -21,7 +21,7 @@ std::ostream &operator<<(std::ostream &out, const std::vector<Monthline> &cal)
         {
             out << cal[row].yearline << std::endl;
         }
-        //out << cal[row].yearline << std::endl;
+        // out << cal[row].yearline << std::endl;
         out << cal[row].monthline << std::endl;
         out << cal[row].weekline << std::endl;
         out << cal[row].dayline[0] << std::endl;
@@ -29,21 +29,40 @@ std::ostream &operator<<(std::ostream &out, const std::vector<Monthline> &cal)
         out << cal[row].dayline[2] << std::endl;
         out << cal[row].dayline[3] << std::endl;
         out << cal[row].dayline[4];
-        //PREV_INDEX
+        // PREV_INDEX
         if (cal[row].dayline[5][0] != ' ' || cal[row].dayline[5][22] != ' ' || cal[row].dayline[5][44] != ' ')
         {
-            out<<std::endl;
+            out << std::endl;
             out << cal[row].dayline[5];
         }
 
         if (row != size - 1)
         {
-            out <<std::endl<<std::endl;
+            out << std::endl
+                << std::endl;
         }
-        else{
+        else
+        {
             break;
         }
-        
     }
     return out;
+}
+
+std::ostream &operator<<(std::ostream &out, Place place)
+{
+    out << place.place_name;
+    return out;
+}
+
+std::ostream &operator<<(std::ostream &out, Event event_name)
+{
+    out << event_name.event_name;
+    return out;
+}
+
+void print_arragement_header(const Date &date, const Time &time)
+{
+    std::cout << arrangement_header << ":\t";
+    std::cout << date << " " << time << std::endl;
 }

@@ -5,6 +5,7 @@
 #include "macro.h"
 #include "print.h"
 #include "cal.h"
+#include "terminal.h"
 
 /***************marcro for testing******************/
 
@@ -43,3 +44,4 @@
 void test_cal1();
 void test_cal2();
 void test_cal3();
+void test_terminal1();

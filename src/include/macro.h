@@ -15,7 +15,7 @@
 
 void info(const char *format, ...);
 
-#define DEBUG(...)                                                              \
+#define DEBUG(...)                                                               \
     do                                                                           \
     {                                                                            \
         char buffer[50];                                                         \
@@ -24,7 +24,7 @@ void info(const char *format, ...);
         info(__VA_ARGS__);                                                       \
     } while (0)
 
-#define INFO(...)                                                              \
+#define INFO(...)                                                               \
     do                                                                          \
     {                                                                           \
         char buffer[50];                                                        \

@@ -38,6 +38,9 @@ public:
     Hour hour;
     Minute minute;
     Second second;
+public:
+    Time(Hour hr, Minute min, Second sec);
+    Time(){};
 };
 
 class Date
@@ -50,6 +53,7 @@ public:
 
 public:
     void check_weekday();
+    const std::string get_weekday_str() const;
 
 public:
     /* inplementations are in cal.c */
@@ -88,7 +92,7 @@ public:
         return Calendar::get_cal(nullptr, nullptr, nullptr, nullptr);
     }
     std::vector<Monthline> get_content();
-    static std::string test_str();
+    //static std::string test_str();
     Calendar(const Calendar &) = delete;
     Calendar &operator=(const Calendar &) = delete;
 };
