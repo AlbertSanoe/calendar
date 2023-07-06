@@ -39,7 +39,7 @@ class Analyzer
 public:
     ERROR_CODE_A status;
     const char *error_message;
-
+    
     void generate_tokens();
 
     ERROR_CODE_A scan_second(std::ifstream &inFile, Second &sec, int &offset);
