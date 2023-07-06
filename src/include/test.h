@@ -2,6 +2,8 @@
 #define TEST_H
 
 #include <iostream> /* cout, ostream */
+#include <fstream>
+
 #include "macro.h"
 #include "print.h"
 #include "cal.h"
@@ -45,3 +47,4 @@ void test_cal1();
 void test_cal2();
 void test_cal3();
 void test_terminal1();
+void test_analyzer1();

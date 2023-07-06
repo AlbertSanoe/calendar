@@ -4,7 +4,7 @@
 #define STD_WRITE std::ios::out
 #define STD_APPEND std::ios::app
 
-const char *output_file_path = "/home/su/Documents/Code/calendar/cache/output.txt";
+const char *output_file_path = "/home/su/Documents/Code/xcalendar/cache/output.txt";
 
 void tofile()
 {
@@ -21,18 +21,23 @@ void tofile()
 void outputfile_demo(const Date &date)
 {
     std::fstream fs;
-    fs.open(output_file_path, STD_WRITE);
+    fs.open(output_file_path, STD_APPEND);
     fs << date << std::endl;
-
     fs.close();
 }
 
-void write_arragement_header(const char *path, const Date &date)
-{
+void write_arrangement_header(const char *path){
     std::fstream fs;
     fs.open(output_file_path, STD_WRITE);
-    fs << arrangement_header << ":\t";
-    fs << date << std::endl;
+    fs << arrangement_header << "\n";
+    fs.close();
+}
+
+void write_date(const char *path,const Date &date)
+{
+    std::fstream fs;
+    fs.open(output_file_path, STD_APPEND);
+    fs << "Date:\t" <<date << std::endl;
     fs.close();
 }
 

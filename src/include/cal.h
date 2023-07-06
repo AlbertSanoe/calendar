@@ -3,7 +3,7 @@
 
 #include <string> /* std::string */
 #include <vector>
-#include "../include/macro.h" /* GLOBAL_DEBUG */
+#include "macro.h" /* GLOBAL_DEBUG */
 
 #define LOCAL_DEBUG 1
 
@@ -80,7 +80,6 @@ private:
     Calendar() {}
 
 public:
-    // String weekday_str_store(); /* make it static looks better */
     std::vector<Monthline> content;
     int month_generate(  Date *const yy_mm_1, int row, int column, bool has_header);
     void generate();
@@ -92,7 +91,6 @@ public:
         return Calendar::get_cal(nullptr, nullptr, nullptr, nullptr);
     }
     std::vector<Monthline> get_content();
-    //static std::string test_str();
     Calendar(const Calendar &) = delete;
     Calendar &operator=(const Calendar &) = delete;
 };

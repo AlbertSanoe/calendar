@@ -1,2 +1,11 @@
-Arrangement:	1999.12.31 Sunday
+#Arrangement#
+Date:	1999.12.31 Sunday
 11:12:33	Saint German District	Doing some examination
+Date:	2022.08.15 Sunday
+09:00:00	Conference Room A	Project planning meeting
+17:00:00	Conference Room A	Meeting ends
+Date:	2022.09.22 Sunday
+18:30:00	Local Park	Alice's birthday party
+Date:	2022.10.05 Sunday
+19:00:00	City Concert Hall	Doors open
+20:00:00	City Concert Hall	Symphony Orchestra performance

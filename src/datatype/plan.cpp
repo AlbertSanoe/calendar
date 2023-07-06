@@ -1,6 +1,6 @@
 #include "../include/plan.h"
 
-const char *arrangement_header = "Arrangement";
+const char *arrangement_header = "#Arrangement#";
 
 Place::Place(std::string pla) : place_name(pla) {}
 

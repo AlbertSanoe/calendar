@@ -4,14 +4,15 @@
 #include <fstream>
 #include "../include/print.h"
 
-
 void tofile();
 
 void outputfile_demo(const Date &date);
 
-void write_arragement_header(const char *path, const Date &date);
+void write_arrangement_header(const char *path);
 
-void write_time_place_event(const char* path, const Time &t,const Place &p,const Event&e);
+void write_date(const char *path, const Date &date);
+
+void write_time_place_event(const char *path, const Time &t, const Place &p, const Event &e);
 
 // // todo!
 // void write_long_arragement_header(const char*path, const Date &date, int lasting_day);

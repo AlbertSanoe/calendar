@@ -2,13 +2,19 @@
 
 std::ostream &operator<<(std::ostream &out, const Date &obj)
 {
-    out << obj.year << "." << obj.month << "." << obj.day << " " << obj.get_weekday_str();
+    out << obj.year << "."
+        << std::setw(2) << std::setfill('0') << obj.month << "."
+        << std::setw(2) << std::setfill('0') << obj.day << " "
+        << obj.get_weekday_str();
     return out;
 }
 
 std::ostream &operator<<(std::ostream &out, const Time &obj)
 {
-    out << obj.hour << ":" << obj.minute << ":" << obj.second;
+    out << std::setw(2) << std::setfill('0') << obj.hour << ":"
+        << std::setw(2) << std::setfill('0') << obj.minute << ":"
+        << std::setw(2) << std::setfill('0') << obj.second;
+    return out;
     return out;
 }
 

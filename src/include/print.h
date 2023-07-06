@@ -2,6 +2,7 @@
 #define PRINT_H
 
 #include <iostream>
+#include <iomanip>
 #include "cal.h" /* Date, Time */
 #include "plan.h" /* Place, Event, arrangement_header */
 
