@@ -25,7 +25,7 @@ void test_analyzer2()
     }
     int a = 0, b = 0;
     Analyzer xx;
-    kw_command l;
-    int k = xx.scan_command(inFile, l, b);
+    kw_logic l;
+    int k = xx.scan_logic(inFile, l, b);
     TEST << k << " " << (int)l << " " << b << std::endl;
 }

@@ -14,9 +14,9 @@
 #define TEST                                                                     \
     do                                                                           \
     {                                                                            \
-        char buffer[50];                                                         \
+        char buffer[100];                                                         \
         int n = sprintf(buffer, "[TEST]  (%s, %d)", CURRENT_FILE, CURRENT_LINE); \
-        info("%-35s\t", buffer);                                                 \
+        info("%-50s\t", buffer);                                                 \
     } while (0);                                                                 \
     std::cout
 

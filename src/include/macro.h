@@ -18,18 +18,18 @@ void info(const char *format, ...);
 #define DEBUG(...)                                                               \
     do                                                                           \
     {                                                                            \
-        char buffer[50];                                                         \
+        char buffer[100];                                                         \
         int n = sprintf(buffer, "[DEBUG] (%s, %d)", CURRENT_FILE, CURRENT_LINE); \
-        info("%-30s\t", buffer);                                                 \
+        info("%-50s\t", buffer);                                                 \
         info(__VA_ARGS__);                                                       \
     } while (0)
 
 #define INFO(...)                                                               \
     do                                                                          \
     {                                                                           \
-        char buffer[50];                                                        \
+        char buffer[100];                                                        \
         int n = sprintf(buffer, "[INFO] (%s, %d)", CURRENT_FILE, CURRENT_LINE); \
-        info("%-30s\t", buffer);                                                \
+        info("%-50s\t", buffer);                                                \
         info(__VA_ARGS__);                                                      \
     } while (0)
 
