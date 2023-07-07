@@ -9,6 +9,7 @@ DATATYPE_PATH=$(LOCAL_PATH)/datatype
 IO_PATH=$(LOCAL_PATH)/io
 MACRO_PATH=$(LOCAL_PATH)/macro
 PARSER_PATH=$(LOCAL_PATH)/parser
+TABLE_PATH=$(LOCAL_PATH)/table
 TEST_PATH=$(LOCAL_PATH)/test
 
 LOCAL_FLAG=
@@ -28,14 +29,14 @@ else
 ECHO=@
 endif
 
-.PHONY: all app local macro parser io test trial
+.PHONY: all app local macro parser io table test trial
 
 $(LOCAL_PREFIX)%.o:%.cpp
 	$(ECHO)$(CXX) $(CXXFLAGS) $< -o $@
 
-all:local app io macro parser $(BINDIR)/$(EXECUTABLE)
+all:local app io macro parser table $(BINDIR)/$(EXECUTABLE)
 
-trial:app io macro parser test $(BINDIR)/$(TEST_EXECUTABLE)  
+trial:app io macro parser table test $(BINDIR)/$(TEST_EXECUTABLE)  
 
 $(BINDIR)/$(EXECUTABLE):
 	$(ECHO)$(CXX) $(LDFLAGS) $(FOR_EXECUTED_OBJFILES) -o $(BINDIR)/$(EXECUTABLE)
@@ -57,6 +58,9 @@ macro:
 
 parser:
 	$(ECHO)cd $(PARSER_PATH) && $(MAKE) $(PRINT_DIR)
+
+table:
+	$(ECHO)cd $(TABLE_PATH)  && $(MAKE) $(PRINT_DIR)
 
 test:
 	$(ECHO)cd $(TEST_PATH) && $(MAKE) $(PRINT_DIR)

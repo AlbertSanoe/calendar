@@ -16,7 +16,7 @@
     {                                                                            \
         char buffer[50];                                                         \
         int n = sprintf(buffer, "[TEST]  (%s, %d)", CURRENT_FILE, CURRENT_LINE); \
-        info("%-30s\t", buffer);                                                 \
+        info("%-35s\t", buffer);                                                 \
     } while (0);                                                                 \
     std::cout
 
@@ -48,3 +48,4 @@ void test_cal2();
 void test_cal3();
 void test_terminal1();
 void test_analyzer1();
+void test_analyzer2();

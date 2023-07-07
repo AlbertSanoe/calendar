@@ -24,9 +24,22 @@ enum ERROR_CODE_A
     FAILED_TO_READ
 };
 
+enum kw_logic
+{
+    kwl_unknown,
+    kwl_if,
+    kwl_ifdef,
+    kwl_ifeq,
+    kwl_ifndef,
+    kwl_ifneq,
+    kwl_else,
+    kwl_define,
+    kwl_let
+};
 
-
-enum kw_command{
+enum kw_command
+{
+    kwc_unknown,
     kwc_set,
     kwc_findset,
     kwc_clear,
@@ -34,12 +47,28 @@ enum kw_command{
     kwc_get
 };
 
+enum kw_arithemetic
+{
+    kwa_unknown,
+    kwa_not, // not
+    kwa_eq,  // equal
+    kwa_ne,  // not equal
+
+    kwa_lt,  // less than
+    kwa_le,  // less or equal
+    kwa_gt,  // greater than
+    kwa_ge,  // greater or equal
+};
+
 class Analyzer
 {
 public:
     ERROR_CODE_A status;
     const char *error_message;
-    
+
+    ERROR_CODE_A scan_logic(std::ifstream &inFile, kw_logic &keyword, int &offset);
+    ERROR_CODE_A scan_command(std::ifstream &inFile, kw_command &keyword, int &offset);
+
     void generate_tokens();
 
     ERROR_CODE_A scan_second(std::ifstream &inFile, Second &sec, int &offset);
