@@ -34,6 +34,7 @@ enum kw_logic
     kwl_ifneq,
     kwl_else,
     kwl_define,
+    kwl_endif,
     kwl_let
 };
 
@@ -54,10 +55,15 @@ enum kw_arithemetic
     kwa_eq,  // equal
     kwa_ne,  // not equal
 
-    kwa_lt,  // less than
-    kwa_le,  // less or equal
-    kwa_gt,  // greater than
-    kwa_ge,  // greater or equal
+    kwa_lt, // less than
+    kwa_le, // less or equal
+    kwa_gt, // greater than
+    kwa_ge, // greater or equal
+
+    kwa_la, // logical and
+    kwa_lo, // logical or
+
+    kwa_asn // assign
 };
 
 class Analyzer
@@ -68,6 +74,10 @@ public:
 
     ERROR_CODE_A scan_logic(std::ifstream &inFile, kw_logic &keyword, int &offset);
     ERROR_CODE_A scan_command(std::ifstream &inFile, kw_command &keyword, int &offset);
+    ERROR_CODE_A scan_arithmetic(std::ifstream &inFile, kw_arithemetic &keyword, int &offset);
+
+    ERROR_CODE_A scan_pvarident(std::ifstream &inFile, std::string &ident, int &offset);
+    ERROR_CODE_A scan_pvarval(std::ifstream &inFile, std::string &val, int &offset);
 
     void generate_tokens();
 

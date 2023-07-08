@@ -4,8 +4,8 @@
 #include <string> /* std::string */
 #include "cal.h" /* Date, Time */
 
-typedef std::string place;
-typedef std::string event;
+// typedef std::string Place;
+// typedef std::string Event;
 
 class Place
 {

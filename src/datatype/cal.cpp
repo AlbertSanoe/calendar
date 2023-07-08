@@ -93,17 +93,101 @@ const int day_val_in_month_common[13] = {
 Time::Time(Hour hr, Minute min, Second sec)
     : hour(hr), minute(min), second(sec) {}
 
+bool Time::operator<(const Time &other) const
+{
+    if (this->hour != other.hour)
+    {
+        return this->hour < other.hour;
+    }
+    if (this->minute != other.minute)
+    {
+        return this->minute < other.minute;
+    }
+    return this->second < other.second;
+}
+
+bool Time::operator==(const Time &other) const
+{
+    if (this->hour != other.hour)
+    {
+        return false;
+    }
+
+    if (this->minute != other.minute)
+    {
+        return false;
+    }
+
+    return this->second == other.second;
+}
+
+bool Time::operator!=(const Time &other) const
+{
+    if (this->hour != other.hour)
+    {
+        return true;
+    }
+
+    if (this->minute != other.minute)
+    {
+        return true;
+    }
+
+    return this->second != other.second;
+}
+
 /* the construction function of the class Date */
 Date::Date(Year val, Month mm, Day dd)
-    : year(val), month(mm), day(dd), weekday(0){}
+    : year(val), month(mm), day(dd), weekday(0) {}
 
 /* the construction function of the class Date, with the weekday value */
 Date::Date(Year val, Month mm, Day dd, Weekday ww)
     : year(val), month(mm), day(dd), weekday(ww) {}
 
 /* for special use */
-Date::Date(Year yy, Month mm) : year(yy), month(mm), day(-1), weekday(-1)
+Date::Date(Year yy, Month mm) : year(yy), month(mm), day(-1), weekday(-1) {}
+
+bool Date::operator<(const Date &other) const
 {
+    if (this->year != other.year)
+    {
+        return this->year < other.year;
+    }
+    if (this->month != other.month)
+    {
+        return this->month < other.month;
+    }
+    return this->day < other.day;
+}
+
+bool Date::operator==(const Date &other) const
+{
+    if (this->year != other.year)
+    {
+        return false;
+    }
+
+    if (this->month != other.month)
+    {
+        return false;
+    }
+
+    return this->day == other.day;
+}
+
+bool Date::operator!=(const Date &other) const
+{
+    if (this->year != other.year)
+    {
+        return true;
+    }
+
+    if (this->month != other.month)
+    {
+        return true;
+    }
+
+    return this->day != other.day;
 }
 
 void Date::increase_month()
@@ -316,7 +400,7 @@ bool Calendar::has_header_on_month()
 
 const std::string wds_str = "Su Mo Tu We Th Fr Sa";
 
-const std::string wds_long_str[7]={
+const std::string wds_long_str[7] = {
     "Sunday",
     "Monday",
     "Tuesday",
@@ -326,7 +410,8 @@ const std::string wds_long_str[7]={
     "Saturday",
 };
 
-const std::string Date::get_weekday_str() const{
+const std::string Date::get_weekday_str() const
+{
     return wds_long_str[this->weekday];
 }
 

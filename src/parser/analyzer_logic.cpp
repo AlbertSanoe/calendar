@@ -10,6 +10,7 @@ const std::map<std::string, kw_logic> kwl_map = {
     {"ifneq", kwl_ifneq},
     {"else", kwl_else},
     {"define", kwl_define},
+    {"endif", kwl_endif},
     {"let", kwl_let}};
 
 static kw_logic __str_to_enum(const std::string &keyword)

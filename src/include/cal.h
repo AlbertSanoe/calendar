@@ -31,16 +31,25 @@ struct Monthline
     Monthline();
 };
 
-
 class Time
 {
 public:
     Hour hour;
     Minute minute;
     Second second;
+
 public:
     Time(Hour hr, Minute min, Second sec);
+    Time(const Time &other)
+    {
+        this->hour = other.hour;
+        this->minute = other.minute;
+        this->second = other.second;
+    }
     Time(){};
+    bool operator<(const Time &other) const;
+    bool operator==(const Time &other) const;
+    bool operator!=(const Time &other) const;
 };
 
 class Date
@@ -60,6 +69,15 @@ public:
     Date(Year yy, Month mm);
     Date(Year yy, Month mm, Day dd);
     Date(Year yy, Month mm, Day dd, Weekday wd);
+    Date(const Date &other)
+    {
+        this->day = other.day;
+        this->month = other.month;
+        this->year = other.year;
+    }
+    bool operator<(const Date &other) const;
+    bool operator==(const Date &other) const;
+    bool operator!=(const Date &other) const;
     void increase_month();
     const bool is_leapyear();
     int get_daystamp();
@@ -73,7 +91,7 @@ private:
     Year year;
     int after;
     int before;
-    
+
     static Calendar *instance;
 
 private:
@@ -81,8 +99,9 @@ private:
 
 public:
     std::vector<Monthline> content;
-    int month_generate(  Date *const yy_mm_1, int row, int column, bool has_header);
+    int month_generate(Date *const yy_mm_1, int row, int column, bool has_header);
     void generate();
+
 public:
     bool has_header_on_month();
     static Calendar *get_cal(Month *month, Year *year, int *after, int *before);
