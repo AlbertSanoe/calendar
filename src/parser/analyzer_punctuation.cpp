@@ -24,7 +24,10 @@ const std::map<std::string, kw_punctuation> kwa_map = {
     {"}", kwd_rcb},
     {"(", kwd_lp},
     {")", kwd_rp},
-    {",",kwd_cm}};
+    {",", kwd_cm},
+    {".", kwd_dot},
+    {"-", kwd_hyp},
+    {":", kwd_col}};
 
 static kw_punctuation __str_to_enum(const std::string &keyword)
 {
@@ -36,7 +39,7 @@ static kw_punctuation __str_to_enum(const std::string &keyword)
     return kwa_unknown;
 }
 
-ERROR_CODE Analyzer::scan_arithmetic(std::ifstream &inFile, kw_punctuation &keyword, int &offset)
+ERROR_CODE Analyzer::scan_punctuation(std::ifstream &inFile, kw_punctuation &keyword, int &offset)
 {
 
     std::string word;
@@ -83,6 +86,16 @@ ERROR_CODE Analyzer::scan_arithmetic(std::ifstream &inFile, kw_punctuation &keyw
             break;
         }
 
+        if (std::isdigit(ch) && (word == "-" || word == "." || word == ":"))
+        {
+            break;
+        }
+
+        if (word == ")" && ch == ';')
+        {
+            break;
+        }
+
         // If the character is a punctuation symbol, add it to the 'word' string
         if (std::ispunct(ch))
         {
@@ -97,7 +110,7 @@ ERROR_CODE Analyzer::scan_arithmetic(std::ifstream &inFile, kw_punctuation &keyw
     // If we reached the end of the file
     if (inFile.eof())
     {
-        if (!(word == ";" || word == "}"))
+        if (!(word == ";" || word == "}" || word == ")"))
         {
             return A_FAILED_TO_READ;
         }

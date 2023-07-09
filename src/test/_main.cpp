@@ -4,7 +4,7 @@
 int main(){
     TEST_STARTFUNCTION;
 
-    test_pparser();
+    test_oparser();
     TEST_ENDFUNCTION;
     return 0;
 }

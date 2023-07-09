@@ -54,4 +54,7 @@ void test_error1();
 void test_error2();
 
 void test_ptable();
+void test_otable();
 void test_pparser();
+
+void test_oparser();

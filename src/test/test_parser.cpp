@@ -46,8 +46,9 @@ void test_pparser()
 
     x.pre_define(inFile, offset);
     bool res;
-    x.pre_ifndef(inFile,offset,res);
+    x.pre_ifne(inFile,offset,res);
     TEST<<std::boolalpha<<res<<std::endl;
+
     // std::string value;
     // std::string m="m43_";
     // bool found = table.get(m, value);
@@ -66,4 +67,37 @@ void test_pparser()
 
     // TEST << "the result is"
     //      << " " << std::boolalpha << containsKey2 << std::endl;
+}
+
+
+void test_oparser(){
+    std::string fileName = "/home/su/Documents/Code/xcalendar/src/test/test_analyzer.txt";
+    std::ifstream inFile(fileName);
+    if (!inFile.is_open())
+    {
+        std::cerr << "Error: Unable to open the file." << std::endl;
+    }
+    int offset = 0;
+    Analyzer a;
+    Output_table ot;
+    CmdParser cmd(&ot,&a);
+
+    cmd.cmd_set(inFile,offset);
+
+    Date d1(1991,3,4);
+    Time t1(12,21,13);
+
+    bool res = ot.contains(d1, t1);
+
+     TEST << std::boolalpha << res << std::endl;
+     Place p2;
+     Event e2;
+     ot.get(d1, t1, p2, e2);
+
+     TEST << p2 << " " << e2 << std::endl;
+
+     ot.move(d1, t1);
+     res = ot.contains(d1, t1);
+
+     TEST << std::boolalpha << res << std::endl;
 }

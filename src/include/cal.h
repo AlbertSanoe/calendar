@@ -69,11 +69,13 @@ public:
     Date(Year yy, Month mm);
     Date(Year yy, Month mm, Day dd);
     Date(Year yy, Month mm, Day dd, Weekday wd);
+    Date(){};
     Date(const Date &other)
     {
         this->day = other.day;
         this->month = other.month;
         this->year = other.year;
+        this->weekday=other.weekday;
     }
     bool operator<(const Date &other) const;
     bool operator==(const Date &other) const;

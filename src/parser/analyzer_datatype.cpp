@@ -13,7 +13,24 @@
 ERROR_CODE Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offset)
 {
     offset = 0;
-    char ch;            // the first character
+    char ch; // the first character
+
+    while (inFile.get(ch))
+    {
+        if (!IS_WHITESPACE_OR_ENDLINE(ch))
+        {
+            if (std::isdigit(ch))
+            {
+                inFile.putback(ch);
+                break;
+            }
+            else
+            {
+                return A_ERROR_TYPE;
+            }
+        }
+    }
+
     if (inFile.get(ch)) // get the first character
     {
         // offset is at least 1
@@ -29,7 +46,7 @@ ERROR_CODE Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offset
             if (inFile.get(next_ch))
             {
                 // offset is at least 2
-                if (IS_WHITESPACE_OR_ENDLINE(next_ch))
+                if (IS_WHITESPACE_OR_ENDLINE(next_ch) || next_ch == ',')
                 {
                     sec = ch - '0';
                     offset = 1; // the token is recognized, so the pointer increased
@@ -43,7 +60,7 @@ ERROR_CODE Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offset
                         if (inFile.get(lookahead))
                         {
                             // offset is at least 3
-                            if (IS_WHITESPACE_OR_ENDLINE(lookahead))
+                            if (IS_WHITESPACE_OR_ENDLINE(lookahead) || lookahead == ',')
                             {
                                 sec = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
@@ -102,9 +119,32 @@ ERROR_CODE Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offset
 ERROR_CODE Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offset)
 {
     offset = 0;
-    char ch;            // the first character
+    char ch; // the first character
+
+    while (inFile.get(ch))
+    {
+#ifdef TRY_DEBUG
+        DEBUG("ch: %c\n", ch);
+#endif
+        if (!IS_WHITESPACE_OR_ENDLINE(ch))
+        {
+            if (std::isdigit(ch))
+            {
+                inFile.putback(ch);
+                break;
+            }
+            else
+            {
+                return A_ERROR_TYPE;
+            }
+        }
+    }
+
     if (inFile.get(ch)) // get the first character
     {
+#ifdef TRY_DEBUG
+        DEBUG("ch: %c\n", ch);
+#endif
         if (!isdigit(ch)) // validate if it is a digit
         {
             offset = 1;
@@ -115,7 +155,10 @@ ERROR_CODE Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offset
             char next_ch; // the next character
             if (inFile.get(next_ch))
             {
-                if (IS_COLON(next_ch))
+#ifdef TRY_DEBUG
+                DEBUG("next ch: %c\n", next_ch);
+#endif
+                if (IS_COLON(next_ch) || IS_WHITESPACE_OR_ENDLINE(next_ch))
                 {
                     min = ch - '0';
                     offset = 1;
@@ -128,7 +171,7 @@ ERROR_CODE Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offset
                         char lookahead;
                         if (inFile.get(lookahead))
                         {
-                            if (IS_COLON(lookahead))
+                            if (IS_COLON(lookahead) || IS_WHITESPACE_OR_ENDLINE(lookahead))
                             {
                                 min = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
@@ -187,7 +230,27 @@ ERROR_CODE Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offset
 ERROR_CODE Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
 {
     offset = 0;
-    char ch;            // the first character
+    char ch; // the first character
+
+    while (inFile.get(ch))
+    {
+#ifdef TRY_DEBUG
+        DEBUG("ch: %c\n", ch);
+#endif
+        if (!IS_WHITESPACE_OR_ENDLINE(ch))
+        {
+            if (std::isdigit(ch))
+            {
+                inFile.putback(ch);
+                break;
+            }
+            else
+            {
+                return A_ERROR_TYPE;
+            }
+        }
+    }
+
     if (inFile.get(ch)) // get the first character
     {
         if (!isdigit(ch)) // validate if it is a digit
@@ -200,7 +263,7 @@ ERROR_CODE Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
             char next_ch; // the next character
             if (inFile.get(next_ch))
             {
-                if (IS_COLON(next_ch))
+                if (IS_COLON(next_ch) || IS_WHITESPACE_OR_ENDLINE(next_ch))
                 {
                     hr = ch - '0';
                     offset = 1;
@@ -213,7 +276,7 @@ ERROR_CODE Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
                         char lookahead;
                         if (inFile.get(lookahead))
                         {
-                            if (IS_COLON(lookahead))
+                            if (IS_COLON(lookahead) || IS_WHITESPACE_OR_ENDLINE(lookahead))
                             {
                                 hr = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
@@ -271,7 +334,24 @@ ERROR_CODE Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
 ERROR_CODE Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
 {
     offset = 0;
-    char ch;            // the first character
+    char ch; // the first character
+
+    while (inFile.get(ch))
+    {
+        if (!IS_WHITESPACE_OR_ENDLINE(ch))
+        {
+            if (std::isdigit(ch))
+            {
+                inFile.putback(ch);
+                break;
+            }
+            else
+            {
+                return A_ERROR_TYPE;
+            }
+        }
+    }
+
     if (inFile.get(ch)) // get the first character
     {
         if (!isdigit(ch)) // validate if it is a digit
@@ -290,7 +370,7 @@ ERROR_CODE Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
                     if (ch == '0')
                     {
                         offset = 2;
-                        dd = 0;              // illegal value, syntactically correct
+                        dd = 0;                // illegal value, syntactically correct
                         return A_OUT_OF_RANGE; // no day 0
                     }
                     else
@@ -366,7 +446,24 @@ ERROR_CODE Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
 ERROR_CODE Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
 {
     offset = 0;
-    char ch;            // the first character
+    char ch; // the first character
+
+    while (inFile.get(ch))
+    {
+        if (!IS_WHITESPACE_OR_ENDLINE(ch))
+        {
+            if (std::isdigit(ch))
+            {
+                inFile.putback(ch);
+                break;
+            }
+            else
+            {
+                return A_ERROR_TYPE;
+            }
+        }
+    }
+
     if (inFile.get(ch)) // get the first character
     {
         if (!isdigit(ch)) // validate if it is a digit
@@ -379,13 +476,13 @@ ERROR_CODE Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
             char next_ch; // the next character
             if (inFile.get(next_ch))
             {
-                if (IS_DOT_OR_HYPHEN(next_ch))
+                if (IS_DOT_OR_HYPHEN(next_ch) || IS_WHITESPACE_OR_ENDLINE(next_ch))
                 {
 
                     if (ch == '0')
                     {
                         offset = 2;
-                        mm = 0;              // illegal value
+                        mm = 0;                // illegal value
                         return A_OUT_OF_RANGE; // no month 0
                     }
                     else
@@ -402,7 +499,7 @@ ERROR_CODE Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
                         char lookahead;
                         if (inFile.get(lookahead))
                         {
-                            if (IS_DOT_OR_HYPHEN(lookahead))
+                            if (IS_DOT_OR_HYPHEN(lookahead) || IS_WHITESPACE_OR_ENDLINE(lookahead))
                             {
                                 mm = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
@@ -459,6 +556,22 @@ ERROR_CODE Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
  */
 ERROR_CODE Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
 {
+    char ch;
+    while (inFile.get(ch))
+    {
+        if (!IS_WHITESPACE_OR_ENDLINE(ch))
+        {
+            if (std::isdigit(ch))
+            {
+                inFile.putback(ch);
+                break;
+            }
+            else
+            {
+                return A_ERROR_TYPE;
+            }
+        }
+    }
 
     // year>=1912
     char chs[5] = {0}; // nullptr
@@ -502,7 +615,7 @@ ERROR_CODE Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
         }
     }
 
-    if (!IS_DOT_OR_HYPHEN(chs[4]))
+    if (!IS_DOT_OR_HYPHEN(chs[4]) && !IS_WHITESPACE_OR_ENDLINE(chs[4]))
     {
         return A_NOT_A_TYPE; // offset = 5
     }

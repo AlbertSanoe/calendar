@@ -17,17 +17,17 @@ bool Preprocessor_table::get(const std::string &ident, std::string &value){
 }
 
 bool Preprocessor_table::contains(const std::string &ident){
-    return table.find(ident)!= table.end();
+    return this->table.find(ident)!= table.end();
 }
 
 void Preprocessor_table::move(const std::string &ident){
-    table.erase(ident);
+    this->table.erase(ident);
 }
 
 bool Preprocessor_table::empty() const {
-    return table.empty();
+    return this->table.empty();
 }
 
 void Preprocessor_table::clear() {
-    table.clear();
+    this->table.clear();
 }

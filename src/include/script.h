@@ -101,10 +101,13 @@ enum kw_punctuation
     kwd_dol, // dollar
     kwd_sc,  // semicolon
     kwd_lcb, // left curly bracket
-    kwd_rcb,  // right curly bracket
+    kwd_rcb, // right curly bracket
     kwd_lp,  // left parenthesis
-    kwd_rp,   // right parenthesis
-    kwd_cm    //comma
+    kwd_rp,  // right parenthesis
+    kwd_cm,  // comma
+    kwd_dot, // dot .
+    kwd_hyp, // hyphen
+    kwd_col  // colon
 };
 
 class Analyzer
@@ -115,7 +118,7 @@ public:
 
     ERROR_CODE scan_logic(std::ifstream &inFile, kw_logic &keyword, int &offset);
     ERROR_CODE scan_command(std::ifstream &inFile, kw_command &keyword, int &offset);
-    ERROR_CODE scan_arithmetic(std::ifstream &inFile, kw_punctuation &keyword, int &offset);
+    ERROR_CODE scan_punctuation(std::ifstream &inFile, kw_punctuation &keyword, int &offset);
 
     ERROR_CODE scan_pvarident(std::ifstream &inFile, std::string &ident, int &offset);
     ERROR_CODE scan_pvarval(std::ifstream &inFile, std::string &val, int &offset);
@@ -152,15 +155,36 @@ public:
     void logic_process();
 
     ERROR_CODE pre_define(std::ifstream &inFile, int &offset);
-    ERROR_CODE pre_if(std::ifstream &inFile, int &offset,bool &result);
-    ERROR_CODE pre_ifdef(std::ifstream &inFile, int &offset,bool &result);
-    ERROR_CODE pre_ifndef(std::ifstream &inFile, int &offset,bool &result);
-    ERROR_CODE pre_ifeq(std::ifstream &inFile, int &offset,bool &result);
-    ERROR_CODE pre_ifneq(std::ifstream &inFile, int &offset,bool &result);
+    ERROR_CODE pre_if(std::ifstream &inFile, int &offset, bool &result);
+    ERROR_CODE pre_ifdef(std::ifstream &inFile, int &offset, bool &result);
+    ERROR_CODE pre_ifndef(std::ifstream &inFile, int &offset, bool &result);
+    ERROR_CODE pre_ifeq(std::ifstream &inFile, int &offset, bool &result);
+    ERROR_CODE pre_ifne(std::ifstream &inFile, int &offset, bool &result);
     ERROR_CODE pre_else(std::ifstream &inFile, int &offset);
 
-    //bool parse_singlebool(std::ifstream &inFile, int &offset); // cut it
-    ERROR_CODE pre_BooleanStat(std::ifstream &inFile, int &offset,bool &result);
+    // bool parse_singlebool(std::ifstream &inFile, int &offset); // cut it
+    ERROR_CODE pre_BooleanStat(std::ifstream &inFile, int &offset, bool &result);
+};
+
+class CmdParser
+{
+private:
+    ERROR_CODE status;
+    const char *err_msg;
+    Output_table *tbl;
+    Analyzer *scanner;
+
+public:
+    CmdParser(Output_table *table, Analyzer *analyzer)
+    {
+        this->tbl = table;
+        this->scanner = analyzer;
+    }
+    ERROR_CODE cmd_set(std::ifstream &inFile, int &offset);
+    ERROR_CODE cmd_findset(std::ifstream &inFile, int &offset);
+    ERROR_CODE cmd_clear(std::ifstream &inFile, int &offset);
+    ERROR_CODE cmd_check(std::ifstream &inFile, int &offset,bool &result);
+    ERROR_CODE cmd_get(std::ifstream &inFile, int &offset, Place *p, Event *e);
 };
 
 class Parser

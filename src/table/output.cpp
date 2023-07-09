@@ -7,6 +7,8 @@ void Output_table::insert(const Date &dt, const Time &tm, const Place &pla, cons
 
 bool Output_table::get(const Date &dt, const Time &tm, Place &pla, Event &eve)
 {
+    pla=Place();
+    eve=Event();
     auto it = this->table.find(Date_Time(dt, tm));
     if (it == this->table.end())
     {
@@ -22,5 +24,17 @@ bool Output_table::get(const Date &dt, const Time &tm, Place &pla, Event &eve)
 
 bool Output_table::contains(const Date &dt, const Time &tm)
 {
-    return table.find(Date_Time(dt, tm)) != table.end();
+    return this->table.find(Date_Time(dt, tm)) != this->table.end();
+}
+
+void Output_table::move(const Date &dt, const Time &tm){
+    this->table.erase(Date_Time(dt, tm));
+}
+
+bool Output_table::empty() const{
+    return this->table.empty();
+}
+
+void Output_table::clear(){
+    this->table.clear();
 }

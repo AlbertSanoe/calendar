@@ -27,7 +27,7 @@ ERROR_CODE PreParser::pre_define(std::ifstream &inFile, int &offset)
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    status = this->scanner->scan_arithmetic(inFile, kwa, offset);
+    status = this->scanner->scan_punctuation(inFile, kwa, offset);
 
     if (status != A_FINE || offset != 1)
     {
@@ -64,7 +64,7 @@ ERROR_CODE PreParser::pre_define(std::ifstream &inFile, int &offset)
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    status = this->scanner->scan_arithmetic(inFile, kwa, offset);
+    status = this->scanner->scan_punctuation(inFile, kwa, offset);
 
     if (status != A_FINE || offset != 1)
     {
@@ -122,7 +122,7 @@ ERROR_CODE PreParser::pre_if(std::ifstream &inFile, int &offset, bool &result)
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    status = this->scanner->scan_arithmetic(inFile, kwa, offset);
+    status = this->scanner->scan_punctuation(inFile, kwa, offset);
 
     if (status != A_FINE || offset != 1)
     {
@@ -254,7 +254,7 @@ ERROR_CODE PreParser::pre_ifeq(std::ifstream &inFile, int &offset, bool &result)
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    status = this->scanner->scan_arithmetic(inFile, kwa, offset);
+    status = this->scanner->scan_punctuation(inFile, kwa, offset);
 
     if (status != A_FINE || offset != 1)
     {
@@ -267,7 +267,7 @@ ERROR_CODE PreParser::pre_ifeq(std::ifstream &inFile, int &offset, bool &result)
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    if (kwa != kwa_asn)
+    if (kwa != kwd_cm)
     {
 #ifdef TRY_DEBUG
         DEBUG("P_SCANNING_MISMATCHED\n");
@@ -291,35 +291,6 @@ ERROR_CODE PreParser::pre_ifeq(std::ifstream &inFile, int &offset, bool &result)
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    status = this->scanner->scan_arithmetic(inFile, kwa, offset);
-
-    if (status != A_FINE || offset != 1)
-    {
-#ifdef TRY_DEBUG
-        DEBUG("P_SCANNING_MISMATCHED\n");
-        // DEBUG("status and offset:%d %d\n", (int)status, offset);
-        // DEBUG("kwa is %d\n", (int)kwa);
-#endif
-        return P_SCANNING_ERROR; //
-    }
-
-    inFile.seekg(-offset, std::ios::cur);
-    offset = 0; // clear the previous value
-
-    if (kwa != kwd_cm)
-    {
-#ifdef TRY_DEBUG
-        DEBUG("P_SCANNING_MISMATCHED\n");
-#endif
-        return P_SCANNING_MISMATCHED;
-    }
-
-#ifdef TRY_DEBUG
-    DEBUG("before inset to table\n");
-    DEBUG("the ident is %s\n", ident.c_str());
-    DEBUG("the val is %s\n", val.c_str());
-#endif
-
     std::string lval;
     bool res = this->tbl->get(ident, lval);
 
@@ -328,9 +299,9 @@ ERROR_CODE PreParser::pre_ifeq(std::ifstream &inFile, int &offset, bool &result)
     return P_FINE;
 }
 
-ERROR_CODE PreParser::pre_ifneq(std::ifstream &inFile, int &offset, bool &result)
+ERROR_CODE PreParser::pre_ifne(std::ifstream &inFile, int &offset, bool &result)
 {
-        ERROR_CODE status;
+    ERROR_CODE status;
     std::string ident;
     kw_punctuation kwa;
     std::string val;
@@ -352,7 +323,7 @@ ERROR_CODE PreParser::pre_ifneq(std::ifstream &inFile, int &offset, bool &result
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    status = this->scanner->scan_arithmetic(inFile, kwa, offset);
+    status = this->scanner->scan_punctuation(inFile, kwa, offset);
 
     if (status != A_FINE || offset != 1)
     {
@@ -365,7 +336,7 @@ ERROR_CODE PreParser::pre_ifneq(std::ifstream &inFile, int &offset, bool &result
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    if (kwa != kwa_asn)
+    if (kwa != kwd_cm)
     {
 #ifdef TRY_DEBUG
         DEBUG("P_SCANNING_MISMATCHED\n");
@@ -389,29 +360,6 @@ ERROR_CODE PreParser::pre_ifneq(std::ifstream &inFile, int &offset, bool &result
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    status = this->scanner->scan_arithmetic(inFile, kwa, offset);
-
-    if (status != A_FINE || offset != 1)
-    {
-#ifdef TRY_DEBUG
-        DEBUG("P_SCANNING_MISMATCHED\n");
-        // DEBUG("status and offset:%d %d\n", (int)status, offset);
-        // DEBUG("kwa is %d\n", (int)kwa);
-#endif
-        return P_SCANNING_ERROR; //
-    }
-
-    inFile.seekg(-offset, std::ios::cur);
-    offset = 0; // clear the previous value
-
-    if (kwa != kwd_cm)
-    {
-#ifdef TRY_DEBUG
-        DEBUG("P_SCANNING_MISMATCHED\n");
-#endif
-        return P_SCANNING_MISMATCHED;
-    }
-
 #ifdef TRY_DEBUG
     DEBUG("before inset to table\n");
     DEBUG("the ident is %s\n", ident.c_str());
@@ -428,6 +376,7 @@ ERROR_CODE PreParser::pre_ifneq(std::ifstream &inFile, int &offset, bool &result
 
 ERROR_CODE PreParser::pre_else(std::ifstream &inFile, int &offset)
 {
+    return P_FINE;
 }
 
 ERROR_CODE PreParser::pre_BooleanStat(std::ifstream &inFile, int &offset, bool &result)
@@ -454,7 +403,7 @@ ERROR_CODE PreParser::pre_BooleanStat(std::ifstream &inFile, int &offset, bool &
     inFile.seekg(-offset, std::ios::cur);
     offset = 0; // clear the previous value
 
-    status = this->scanner->scan_arithmetic(inFile, kwa, offset);
+    status = this->scanner->scan_punctuation(inFile, kwa, offset);
 
     if (status != A_FINE || offset != 1)
     {

@@ -83,6 +83,10 @@ public:
     void insert(const Date &dt, const Time &tm, const Place &pla, const Event &eve);
     bool get(const Date &dt, const Time &tm, Place &pla, Event &eve);
     bool contains(const Date &dt, const Time &tm);
+
+    void move(const Date &dt, const Time &tm);
+    bool empty() const;
+    void clear();
 };
 
 enum Output_Datatype
