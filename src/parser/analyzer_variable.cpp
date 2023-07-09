@@ -1,8 +1,8 @@
-#include "../include/analyzer.h"
+#include "../include/script.h"
 
 #define IS_WHITESPACE_OR_ENDLINE(ch) ((ch) == ' ' || (ch) == '\t' || (ch) == '\n')
 
-ERROR_CODE_A Analyzer::scan_pvarident(std::ifstream &inFile, std::string &ident, int &offset)
+ERROR_CODE Analyzer::scan_pvarident(std::ifstream &inFile, std::string &ident, int &offset)
 {
     char ch;
     ident = "";
@@ -20,7 +20,7 @@ ERROR_CODE_A Analyzer::scan_pvarident(std::ifstream &inFile, std::string &ident,
     // Check if the current character is valid for the start of a variable name
     if (!std::isalpha(ch) && ch != '_')
     {
-        return ERROR_TYPE; // Invalid variable name
+        return A_ERROR_TYPE; // Invalid variable name
     }
 
     // Read the first character of the variable name
@@ -42,27 +42,36 @@ ERROR_CODE_A Analyzer::scan_pvarident(std::ifstream &inFile, std::string &ident,
 
     if (inFile.eof())
     {
-        return FAILED_TO_READ;
+        return A_FAILED_TO_READ;
     }
 
     if (!IS_WHITESPACE_OR_ENDLINE(ch))
     {
-        return NOT_A_TYPE;
+        return A_NOT_A_TYPE;
     }
+#ifdef TRY_DEBUG
+    DEBUG("offset is %d\n", offset);
+#endif
 
     offset = 1;
 
-    return FINE; // Successfully read the variable name
+    return A_FINE; // Successfully read the variable name
 }
 
-ERROR_CODE_A scan_pvarval(std::ifstream &inFile, std::string &val, int &offset)
+ERROR_CODE Analyzer::scan_pvarval(std::ifstream &inFile, std::string &val, int &offset)
 {
+#ifdef TRY_DEBUG
+    DEBUG("offset is %d\n", offset);
+#endif
     char ch;
     val = "";
 
     // Read and ignore whitespace characters
     while (inFile.get(ch))
     {
+#ifdef TRY_DEBUG
+        DEBUG("ch is %c\n", ch);
+#endif
         ++offset;
         if (!IS_WHITESPACE_OR_ENDLINE(ch))
         {
@@ -73,29 +82,34 @@ ERROR_CODE_A scan_pvarval(std::ifstream &inFile, std::string &val, int &offset)
     // Check if the current character is valid for the start of a string
     if (!std::isalnum(ch) && ch != '_')
     {
-        return ERROR_TYPE; // Invalid string start
+        return A_ERROR_TYPE; // Invalid string start
     }
 
     // Read the string characters
     do
     {
         val += ch;
-
+#ifdef TRY_DEBUG
+        DEBUG("ch is %c\n", ch);
+#endif
         if (!inFile.get(ch))
         {
-            return FAILED_TO_READ; // Reached end of file before semicolon
+            return A_FAILED_TO_READ; // Reached end of file before semicolon
         }
         ++offset;
     } while (std::isalnum(ch) || ch == '_');
 
     // Check if the current character is a semicolon
-    if (ch != ';')
+    if (ch != ';'&&!IS_WHITESPACE_OR_ENDLINE(ch))
     {
-        return NOT_A_TYPE; // Expecting a semicolon at the end of the string
+        return A_NOT_A_TYPE; // Expecting a semicolon at the end of the string
     }
+
+#ifdef TRY_DEBUG
+    DEBUG("offset is %d\n", offset);
+#endif
 
     offset = 1; // Account for the read semicolon
 
-    return FINE; // Successfully read the string
+    return A_FINE; // Successfully read the string
 }
-

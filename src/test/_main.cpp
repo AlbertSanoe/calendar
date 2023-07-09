@@ -4,7 +4,7 @@
 int main(){
     TEST_STARTFUNCTION;
 
-    test_analyzer2();
+    test_pparser();
     TEST_ENDFUNCTION;
     return 0;
 }

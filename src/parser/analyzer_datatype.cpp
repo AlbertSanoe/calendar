@@ -1,4 +1,4 @@
-#include "../include/analyzer.h"
+#include "../include/script.h"
 
 #define IS_WHITESPACE_OR_ENDLINE(ch) ((ch) == ' ' || (ch) == '\t' || (ch) == '\n')
 #define IS_COLON(ch) ((ch) == ':')
@@ -10,7 +10,7 @@
  *               or the distance from the last letter of the token
  * @return the status after scanning
  */
-ERROR_CODE_A Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offset)
+ERROR_CODE Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offset)
 {
     offset = 0;
     char ch;            // the first character
@@ -21,7 +21,7 @@ ERROR_CODE_A Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offs
         if (!isdigit(ch)) // validate if it is a digit
         {
             offset = 1;
-            return ERROR_TYPE;
+            return A_ERROR_TYPE;
         }
         else
         {
@@ -33,7 +33,7 @@ ERROR_CODE_A Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offs
                 {
                     sec = ch - '0';
                     offset = 1; // the token is recognized, so the pointer increased
-                    return FINE;
+                    return A_FINE;
                 }
                 else if (isdigit(next_ch))
                 {
@@ -47,19 +47,19 @@ ERROR_CODE_A Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offs
                             {
                                 sec = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
-                                return FINE;
+                                return A_FINE;
                             }
                             else
                             {
                                 offset = 3;
                                 // something like 33p, 33!...
-                                return NOT_A_TYPE;
+                                return A_NOT_A_TYPE;
                             }
                         }
                         else
                         {
                             offset = 2;
-                            return FAILED_TO_READ;
+                            return A_FAILED_TO_READ;
                         }
                     }
                     else
@@ -69,27 +69,27 @@ ERROR_CODE_A Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offs
                         offset = 2;
                         sec = (ch - '0') * 10 + next_ch - '0';
                         // illegal value, syntactically correct
-                        return OUT_OF_RANGE;
+                        return A_OUT_OF_RANGE;
                     }
                 }
                 else
                 {
                     offset = 2;
                     // something like 1x, 2p, 3!...
-                    return NOT_A_TYPE; // something is mixed together..
+                    return A_NOT_A_TYPE; // something is mixed together..
                 }
             }
             else
             {
                 offset = 1;
                 // read a digit, and then failed to read
-                return FAILED_TO_READ; // it should not be at the end of file
+                return A_FAILED_TO_READ; // it should not be at the end of file
             }
         }
     }
     else
     {
-        return FAILED_TO_READ; // offset=0
+        return A_FAILED_TO_READ; // offset=0
     }
 }
 
@@ -99,7 +99,7 @@ ERROR_CODE_A Analyzer::scan_second(std::ifstream &inFile, Second &sec, int &offs
  *               or the distance from the last letter of the token
  * @return the status after scanning
  */
-ERROR_CODE_A Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offset)
+ERROR_CODE Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offset)
 {
     offset = 0;
     char ch;            // the first character
@@ -108,7 +108,7 @@ ERROR_CODE_A Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offs
         if (!isdigit(ch)) // validate if it is a digit
         {
             offset = 1;
-            return ERROR_TYPE;
+            return A_ERROR_TYPE;
         }
         else
         {
@@ -119,7 +119,7 @@ ERROR_CODE_A Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offs
                 {
                     min = ch - '0';
                     offset = 1;
-                    return FINE;
+                    return A_FINE;
                 }
                 else if (isdigit(next_ch))
                 {
@@ -132,19 +132,19 @@ ERROR_CODE_A Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offs
                             {
                                 min = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
-                                return FINE;
+                                return A_FINE;
                             }
                             else
                             {
                                 offset = 3;
                                 // something like 33p, 33!...
-                                return NOT_A_TYPE;
+                                return A_NOT_A_TYPE;
                             }
                         }
                         else
                         {
                             offset = 2;
-                            return FAILED_TO_READ;
+                            return A_FAILED_TO_READ;
                         }
                     }
                     else
@@ -154,27 +154,27 @@ ERROR_CODE_A Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offs
                         offset = 2;
                         min = (ch - '0') * 10 + next_ch - '0';
                         // illegal value, syntactically correct
-                        return OUT_OF_RANGE;
+                        return A_OUT_OF_RANGE;
                     }
                 }
                 else
                 {
                     offset = 2;
                     // something like 1x, 2p, 3!...
-                    return NOT_A_TYPE; // something is mixed together..
+                    return A_NOT_A_TYPE; // something is mixed together..
                 }
             }
             else
             {
                 offset = 1;
                 // read a digit, and then failed to read
-                return FAILED_TO_READ; // it should not be at the end of file
+                return A_FAILED_TO_READ; // it should not be at the end of file
             }
         }
     }
     else
     {
-        return FAILED_TO_READ; // I get nothing!
+        return A_FAILED_TO_READ; // I get nothing!
     }
 }
 
@@ -184,7 +184,7 @@ ERROR_CODE_A Analyzer::scan_minute(std::ifstream &inFile, Minute &min, int &offs
  *               or the distance from the last letter of the token
  * @return the status after scanning
  */
-ERROR_CODE_A Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
+ERROR_CODE Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
 {
     offset = 0;
     char ch;            // the first character
@@ -193,7 +193,7 @@ ERROR_CODE_A Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
         if (!isdigit(ch)) // validate if it is a digit
         {
             offset = 1;
-            return ERROR_TYPE;
+            return A_ERROR_TYPE;
         }
         else
         {
@@ -204,7 +204,7 @@ ERROR_CODE_A Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
                 {
                     hr = ch - '0';
                     offset = 1;
-                    return FINE;
+                    return A_FINE;
                 }
                 else if (isdigit(next_ch))
                 {
@@ -217,19 +217,19 @@ ERROR_CODE_A Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
                             {
                                 hr = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
-                                return FINE;
+                                return A_FINE;
                             }
                             else
                             {
                                 offset = 3;
                                 // something like 33p, 33!...
-                                return NOT_A_TYPE;
+                                return A_NOT_A_TYPE;
                             }
                         }
                         else
                         {
                             offset = 2;
-                            return FAILED_TO_READ;
+                            return A_FAILED_TO_READ;
                         }
                     }
                     else
@@ -238,27 +238,27 @@ ERROR_CODE_A Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
                         // like 25, 31, 89...
                         offset = 2;
                         hr = (ch - '0') * 10 + next_ch - '0';
-                        return OUT_OF_RANGE;
+                        return A_OUT_OF_RANGE;
                     }
                 }
                 else
                 {
                     offset = 2;
                     // something like 1x, 2p, 3!...
-                    return NOT_A_TYPE; // something is mixed together..
+                    return A_NOT_A_TYPE; // something is mixed together..
                 }
             }
             else
             {
                 offset = 1;
                 // read a digit, and then failed to read
-                return FAILED_TO_READ; // it should not be at the end of file
+                return A_FAILED_TO_READ; // it should not be at the end of file
             }
         }
     }
     else
     {
-        return FAILED_TO_READ; // I get nothing!
+        return A_FAILED_TO_READ; // I get nothing!
     }
 }
 
@@ -268,7 +268,7 @@ ERROR_CODE_A Analyzer::scan_hour(std::ifstream &inFile, Hour &hr, int &offset)
  *               or the distance from the last letter of the token
  * @return the status after scanning
  */
-ERROR_CODE_A Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
+ERROR_CODE Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
 {
     offset = 0;
     char ch;            // the first character
@@ -277,7 +277,7 @@ ERROR_CODE_A Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
         if (!isdigit(ch)) // validate if it is a digit
         {
             offset = 1;
-            return ERROR_TYPE;
+            return A_ERROR_TYPE;
         }
         else
         {
@@ -291,13 +291,13 @@ ERROR_CODE_A Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
                     {
                         offset = 2;
                         dd = 0;              // illegal value, syntactically correct
-                        return OUT_OF_RANGE; // no day 0
+                        return A_OUT_OF_RANGE; // no day 0
                     }
                     else
                     {
                         offset = 1;
                         dd = ch - '0';
-                        return FINE;
+                        return A_FINE;
                     }
                 }
                 else if (isdigit(next_ch))
@@ -311,19 +311,19 @@ ERROR_CODE_A Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
                             {
                                 dd = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
-                                return FINE;
+                                return A_FINE;
                             }
                             else
                             {
                                 offset = 3;
                                 // something like 33p, 33!...
-                                return NOT_A_TYPE;
+                                return A_NOT_A_TYPE;
                             }
                         }
                         else
                         {
                             offset = 2;
-                            return FAILED_TO_READ;
+                            return A_FAILED_TO_READ;
                         }
                     }
                     else
@@ -333,27 +333,27 @@ ERROR_CODE_A Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
                         offset = 2;
                         dd = (ch - '0') * 10 + next_ch - '0';
                         // illegal value, syntactically correct
-                        return OUT_OF_RANGE;
+                        return A_OUT_OF_RANGE;
                     }
                 }
                 else
                 {
                     offset = 2;
                     // something like 1x, 2p, 3!...
-                    return NOT_A_TYPE; // something is mixed together..
+                    return A_NOT_A_TYPE; // something is mixed together..
                 }
             }
             else
             {
                 offset = 1;
                 // read a digit, and then failed to read
-                return FAILED_TO_READ; // it should not be at the end of file
+                return A_FAILED_TO_READ; // it should not be at the end of file
             }
         }
     }
     else
     {
-        return FAILED_TO_READ; // I get nothing!
+        return A_FAILED_TO_READ; // I get nothing!
     }
 }
 
@@ -363,7 +363,7 @@ ERROR_CODE_A Analyzer::scan_day(std::ifstream &inFile, Day &dd, int &offset)
  *               or the distance from the last letter of the token
  * @return the status after scanning
  */
-ERROR_CODE_A Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
+ERROR_CODE Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
 {
     offset = 0;
     char ch;            // the first character
@@ -372,7 +372,7 @@ ERROR_CODE_A Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
         if (!isdigit(ch)) // validate if it is a digit
         {
             offset = 1;
-            return ERROR_TYPE;
+            return A_ERROR_TYPE;
         }
         else
         {
@@ -386,13 +386,13 @@ ERROR_CODE_A Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
                     {
                         offset = 2;
                         mm = 0;              // illegal value
-                        return OUT_OF_RANGE; // no month 0
+                        return A_OUT_OF_RANGE; // no month 0
                     }
                     else
                     {
                         offset = 1;
                         mm = ch - '0';
-                        return FINE;
+                        return A_FINE;
                     }
                 }
                 else if (isdigit(next_ch))
@@ -406,19 +406,19 @@ ERROR_CODE_A Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
                             {
                                 mm = (ch - '0') * 10 + next_ch - '0';
                                 offset = 1;
-                                return FINE;
+                                return A_FINE;
                             }
                             else
                             {
                                 offset = 3;
                                 // something like 33p, 33!...
-                                return NOT_A_TYPE;
+                                return A_NOT_A_TYPE;
                             }
                         }
                         else
                         {
                             offset = 2;
-                            return FAILED_TO_READ;
+                            return A_FAILED_TO_READ;
                         }
                     }
                     else
@@ -427,27 +427,27 @@ ERROR_CODE_A Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
                         // like 25, 31, 89...
                         offset = 2;
                         mm = (ch - '0') * 10 + next_ch - '0';
-                        return OUT_OF_RANGE;
+                        return A_OUT_OF_RANGE;
                     }
                 }
                 else
                 {
                     offset = 2;
                     // something like 1x, 2p, 3!...
-                    return NOT_A_TYPE; // something is mixed together..
+                    return A_NOT_A_TYPE; // something is mixed together..
                 }
             }
             else
             {
                 offset = 1;
                 // read a digit, and then failed to read
-                return FAILED_TO_READ; // it should not be at the end of file
+                return A_FAILED_TO_READ; // it should not be at the end of file
             }
         }
     }
     else
     {
-        return FAILED_TO_READ; // I get nothing!
+        return A_FAILED_TO_READ; // I get nothing!
     }
 }
 
@@ -457,7 +457,7 @@ ERROR_CODE_A Analyzer::scan_month(std::ifstream &inFile, Month &mm, int &offset)
  *               or the distance from the last letter of the token
  * @return the status after scanning
  */
-ERROR_CODE_A Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
+ERROR_CODE Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
 {
 
     // year>=1912
@@ -482,11 +482,11 @@ ERROR_CODE_A Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
         {
             if (i == 0)
             {
-                return ERROR_TYPE;
+                return A_ERROR_TYPE;
             }
             else
             {
-                return NOT_A_TYPE;
+                return A_NOT_A_TYPE;
             }
         }
         else
@@ -496,7 +496,7 @@ ERROR_CODE_A Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
                 if (chs[i] == '0')
                 {
                     yy = 0;
-                    return OUT_OF_RANGE;
+                    return A_OUT_OF_RANGE;
                 }
             }
         }
@@ -504,7 +504,7 @@ ERROR_CODE_A Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
 
     if (!IS_DOT_OR_HYPHEN(chs[4]))
     {
-        return NOT_A_TYPE; // offset = 5
+        return A_NOT_A_TYPE; // offset = 5
     }
     else
     {
@@ -512,7 +512,7 @@ ERROR_CODE_A Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
         yy = (chs[0] - '0') * 1000 + (chs[1] - '0') * 100 + (chs[2] - '0') * 10 + (chs[3] - '0');
         if (yy >= 1912 && yy <= 9999)
         {
-            return FINE;
+            return A_FINE;
         }
         else
         {
@@ -521,7 +521,7 @@ ERROR_CODE_A Analyzer::scan_year(std::ifstream &inFile, Year &yy, int &offset)
 #ifdef TRY_DEBUG
             DEBUG("have come here, yy is %d\n", yy);
 #endif
-            return OUT_OF_RANGE;
+            return A_OUT_OF_RANGE;
         }
     }
 }

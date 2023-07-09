@@ -49,3 +49,9 @@ void test_cal3();
 void test_terminal1();
 void test_analyzer1();
 void test_analyzer2();
+
+void test_error1();
+void test_error2();
+
+void test_ptable();
+void test_pparser();

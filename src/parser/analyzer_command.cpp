@@ -1,6 +1,6 @@
 #include <string>
 #include <map>
-#include "../include/analyzer.h"
+#include "../include/script.h"
 
 const std::map<std::string, kw_command> kwc_map = {
     {"SET", kwc_set},
@@ -21,7 +21,7 @@ static kw_command __str_to_enum(const std::string &keyword)
 
 #define IS_WHITESPACE_OR_ENDLINE(ch) ((ch) == ' ' || (ch) == '\t' || (ch) == '\n')
 
-ERROR_CODE_A Analyzer::scan_command(std::ifstream &inFile, kw_command &keyword, int &offset)
+ERROR_CODE Analyzer::scan_command(std::ifstream &inFile, kw_command &keyword, int &offset)
 {
 
     // the function is invoked when the analyzer read an '$'
@@ -48,7 +48,7 @@ ERROR_CODE_A Analyzer::scan_command(std::ifstream &inFile, kw_command &keyword, 
         } // validate if it is alphabet
         else
         {
-            return ERROR_TYPE;
+            return A_ERROR_TYPE;
         }
     }
 
@@ -62,7 +62,7 @@ ERROR_CODE_A Analyzer::scan_command(std::ifstream &inFile, kw_command &keyword, 
 #ifdef TRY_DEBUG
         DEBUG("the value of word is :%s\n", word.c_str());
 #endif
-        return FAILED_TO_READ;
+        return A_FAILED_TO_READ;
     }
 
     if (word.empty())
@@ -70,7 +70,7 @@ ERROR_CODE_A Analyzer::scan_command(std::ifstream &inFile, kw_command &keyword, 
 #ifdef TRY_DEBUG
         DEBUG("the value of word is :%s\n", word.c_str());
 #endif
-        return NOT_A_TYPE;
+        return A_NOT_A_TYPE;
     }
 #ifdef TRY_DEBUG
     DEBUG("before lookup: the value of word is :%s\n", word.c_str());
@@ -79,9 +79,9 @@ ERROR_CODE_A Analyzer::scan_command(std::ifstream &inFile, kw_command &keyword, 
 
     if (keyword == kwc_unknown)
     {
-        return NOT_A_TYPE;
+        return A_NOT_A_TYPE;
     }
 
     offset = 1;
-    return FINE;
+    return A_FINE;
 }

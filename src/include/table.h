@@ -22,6 +22,9 @@ public:
     void insert(const std::string &ident, const std::string &value);
     bool get(const std::string &ident, std::string &value);
     bool contains(const std::string &ident);
+    void move(const std::string &ident);
+    bool empty() const;
+    void clear();
 };
 
 class Output_table
@@ -217,7 +220,7 @@ public:
     void insert_pl(const std::string &ident, const Place &val);
     void insert_ev(const std::string &ident, const Event &val);
 
-    bool get(const std::string &ident, Output_Datatype od, bool* boolean, Date *dt, Time *tm, Place *pla, Event *eve);
+    bool get(const std::string &ident, Output_Datatype od, bool *boolean, Date *dt, Time *tm, Place *pla, Event *eve);
     Output_Datatype contains(const std::string &ident);
 };
 

@@ -5,6 +5,7 @@ void Preprocessor_table::insert(const std::string &ident, const std::string &val
 }
 
 bool Preprocessor_table::get(const std::string &ident, std::string &value){
+    value="";
     auto it=this->table.find(ident);
     if(it!=table.end()){
         value= it->second;
@@ -17,4 +18,16 @@ bool Preprocessor_table::get(const std::string &ident, std::string &value){
 
 bool Preprocessor_table::contains(const std::string &ident){
     return table.find(ident)!= table.end();
+}
+
+void Preprocessor_table::move(const std::string &ident){
+    table.erase(ident);
+}
+
+bool Preprocessor_table::empty() const {
+    return table.empty();
+}
+
+void Preprocessor_table::clear() {
+    table.clear();
 }

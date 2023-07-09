@@ -1,5 +1,5 @@
 #include "../include/test.h"
-#include "../include/analyzer.h"
+#include "../include/script.h"
 
 void test_analyzer1()
 {
@@ -28,4 +28,42 @@ void test_analyzer2()
     kw_logic l;
     int k = xx.scan_logic(inFile, l, b);
     TEST << k << " " << (int)l << " " << b << std::endl;
+}
+
+void test_pparser()
+{
+    TEST<<"hello?"<<std::endl;
+    std::string fileName = "/home/su/Documents/Code/xcalendar/src/test/test_analyzer.txt";
+    std::ifstream inFile(fileName);
+    if (!inFile.is_open())
+    {
+        std::cerr << "Error: Unable to open the file." << std::endl;
+    }
+    int offset = 0;
+    Analyzer a;
+    Preprocessor_table table;
+    PreParser x(&table, &a);
+
+    x.pre_define(inFile, offset);
+    bool res;
+    x.pre_ifndef(inFile,offset,res);
+    TEST<<std::boolalpha<<res<<std::endl;
+    // std::string value;
+    // std::string m="m43_";
+    // bool found = table.get(m, value);
+    // TEST << "the result is"
+    //      << " " << std::boolalpha << found << std::endl;
+    // TEST << value << std::endl;
+
+    // bool containsKey1 = table.contains(m);
+
+    // TEST << "the result is"
+    //      << " " << std::boolalpha << containsKey1 << std::endl;
+
+    // table.move(m);
+
+    // bool containsKey2 = table.contains(m);
+
+    // TEST << "the result is"
+    //      << " " << std::boolalpha << containsKey2 << std::endl;
 }
