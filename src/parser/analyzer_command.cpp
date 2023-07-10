@@ -48,6 +48,10 @@ ERROR_CODE Analyzer::scan_command(std::ifstream &inFile, kw_command &keyword, in
         } // validate if it is alphabet
         else
         {
+            if (ch == '(')
+            {
+                break;
+            }
             return A_ERROR_TYPE;
         }
     }

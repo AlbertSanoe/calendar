@@ -84,3 +84,39 @@ std::string error_handler(ERROR_CODE err)
     // Return the generated error message string
     return result;
 }
+
+bool Analyzer::scan_whitespace(std::ifstream &inFile, int &offset)
+{
+    bool allWhitespace = true;
+    char c;
+    offset = 0;
+
+    while (inFile.get(c))
+    {
+        ++offset;
+        if (!std::isspace(static_cast<unsigned char>(c)))
+        {
+            allWhitespace = false;
+            break;
+        }
+    }
+    return allWhitespace;
+}
+
+bool Analyzer::ignore(std::ifstream &inFile, int &offset, char ch)
+{
+    char c;
+    offset = 0;
+
+    while (inFile.get(c))
+    {
+        if (c == ch)
+        {
+            offset = 1;
+            return true;
+        }
+        offset++;
+    }
+
+    return false;
+}

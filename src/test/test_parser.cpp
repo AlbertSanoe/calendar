@@ -32,7 +32,7 @@ void test_analyzer2()
 
 void test_pparser()
 {
-    TEST<<"hello?"<<std::endl;
+    TEST << "hello?" << std::endl;
     std::string fileName = "/home/su/Documents/Code/xcalendar/src/test/test_analyzer.txt";
     std::ifstream inFile(fileName);
     if (!inFile.is_open())
@@ -46,8 +46,8 @@ void test_pparser()
 
     x.pre_define(inFile, offset);
     bool res;
-    x.pre_ifne(inFile,offset,res);
-    TEST<<std::boolalpha<<res<<std::endl;
+    x.pre_ifne(inFile, offset, res);
+    TEST << std::boolalpha << res << std::endl;
 
     // std::string value;
     // std::string m="m43_";
@@ -69,8 +69,8 @@ void test_pparser()
     //      << " " << std::boolalpha << containsKey2 << std::endl;
 }
 
-
-void test_oparser(){
+void test_oparser()
+{
     std::string fileName = "/home/su/Documents/Code/xcalendar/src/test/test_analyzer.txt";
     std::ifstream inFile(fileName);
     if (!inFile.is_open())
@@ -80,24 +80,58 @@ void test_oparser(){
     int offset = 0;
     Analyzer a;
     Output_table ot;
-    CmdParser cmd(&ot,&a);
+    CmdParser cmd(&ot, &a);
 
-    cmd.cmd_set(inFile,offset);
+    cmd.cmd_set(inFile, offset);
 
-    Date d1(1991,3,4);
-    Time t1(12,21,13);
+    Date d1(1991, 3, 4);
+    Time t1(12, 21, 13);
 
     bool res = ot.contains(d1, t1);
 
-     TEST << std::boolalpha << res << std::endl;
-     Place p2;
-     Event e2;
-     ot.get(d1, t1, p2, e2);
+    TEST << std::boolalpha << res << std::endl;
+    Place p2;
+    Event e2;
+    ot.get(d1, t1, p2, e2);
 
-     TEST << p2 << " " << e2 << std::endl;
+    TEST << p2 << " " << e2 << std::endl;
 
-     ot.move(d1, t1);
-     res = ot.contains(d1, t1);
+    ot.move(d1, t1);
+    res = ot.contains(d1, t1);
 
-     TEST << std::boolalpha << res << std::endl;
+    TEST << std::boolalpha << res << std::endl;
+}
+
+void test_parser1()
+{
+    std::string fileName = "/home/su/Documents/Code/xcalendar/src/test/test_analyzer.txt";
+    std::ifstream inFile(fileName);
+    if (!inFile.is_open())
+    {
+        std::cerr << "Error: Unable to open the file." << std::endl;
+    }
+    int offset = 0;
+
+    Analyzer a;
+    Output_table ot;
+    CmdParser cmd(&ot, &a);
+
+    cmd.cmd_findset(inFile, offset);
+
+    Date d1(1991, 3, 4);
+    Time t1(12, 21, 13);
+
+    bool res = ot.contains(d1, t1);
+
+    TEST << std::boolalpha << res << std::endl;
+    Place p2;
+    Event e2;
+    ot.get(d1, t1, p2, e2);
+
+    TEST << p2 << " " << e2 << std::endl;
+
+    ot.move(d1, t1);
+    res = ot.contains(d1, t1);
+
+    TEST << std::boolalpha << res << std::endl;
 }

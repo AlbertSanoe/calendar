@@ -47,6 +47,7 @@ void test_cal1();
 void test_cal2();
 void test_cal3();
 void test_terminal1();
+void test_terminal2();
 void test_analyzer1();
 void test_analyzer2();
 

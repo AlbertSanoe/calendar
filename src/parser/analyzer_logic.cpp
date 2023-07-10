@@ -33,11 +33,29 @@ ERROR_CODE Analyzer::scan_logic(std::ifstream &inFile, kw_logic &keyword, int &o
     std::string word; // the target
     char ch;          // get from file
 
+    // Read and ignore whitespace characters
+    while (inFile.get(ch))
+    {
+#ifdef TRY_DEBUG
+        DEBUG("ch is %c\n", ch);
+#endif
+        ++offset;
+        if (!IS_WHITESPACE_OR_ENDLINE(ch))
+        {
+            word += ch;
+#ifdef TRY_DEBUG
+            DEBUG("the value of ch is:  %c\n", ch);
+
+#endif
+            break;
+        }
+    }
+
     // accepts input until gets whitespace or endline
     while (inFile.get(ch))
     {
 #ifdef TRY_DEBUG
-        DEBUG("the value of ch is:%c\n", ch);
+        DEBUG("the value of ch is:  %c\n", ch);
 
 #endif
         ++offset;

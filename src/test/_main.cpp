@@ -4,7 +4,7 @@
 int main(){
     TEST_STARTFUNCTION;
 
-    test_otable2();
+    test_terminal2();
     TEST_ENDFUNCTION;
     return 0;
 }

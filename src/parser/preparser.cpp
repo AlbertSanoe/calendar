@@ -241,6 +241,7 @@ ERROR_CODE PreParser::pre_ifeq(std::ifstream &inFile, int &offset, bool &result)
 
 #ifdef TRY_DEBUG
     DEBUG("the ident is %s\n", ident.c_str());
+    DEBUG("status, offset %d, %d\n",(int)status,offset);
 #endif
 
     if (status != A_FINE || offset != 1)

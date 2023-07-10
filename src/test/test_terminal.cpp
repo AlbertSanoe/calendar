@@ -49,3 +49,10 @@ void test_terminal1()
     write_time_place_event(output_file_path, doorsOpen, location3, Event("Doors open"));
     write_time_place_event(output_file_path, concertStart, location3, concert);
 }
+
+void test_terminal2(){
+    const char *output_file_path = "/home/su/Documents/Code/xcalendar/cache/output3.txt";
+    const char *input="/home/su/Documents/Code/xcalendar/src/test/test_analyzer.txt";
+
+    read(input,output_file_path);
+}

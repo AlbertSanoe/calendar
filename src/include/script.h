@@ -122,6 +122,8 @@ public:
 
     ERROR_CODE scan_pvarident(std::ifstream &inFile, std::string &ident, int &offset);
     ERROR_CODE scan_pvarval(std::ifstream &inFile, std::string &val, int &offset);
+    bool scan_whitespace(std::ifstream &inFile, int &offset);
+    bool ignore(std::ifstream &inFile, int &offset, char ch);
 
     void generate_tokens();
 

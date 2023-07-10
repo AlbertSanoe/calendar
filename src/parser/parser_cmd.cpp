@@ -375,6 +375,10 @@ ERROR_CODE CmdParser::cmd_set(std::ifstream &inFile, int &offset)
 
     Time time = Time(hr, min, sec);
 
+#ifdef TRY_DEBUG
+    DEBUG("inserting..!\n");
+#endif
+
     this->tbl->insert(date, time, pla, eve);
 
     return P_FINE;

@@ -51,21 +51,29 @@ void write_file_output(const char *file, Output_table *tbl)
 {
     write_arrangement_header(file);
     tbl->iter_init();
-    Date date;
+    Date date = Date(0, 0, 0, 0);
     Time time;
     Place place;
     Event event;
+    Date old_date(1, 1, 1, 1);
     bool res;
-    Date old_date = date;
     do
     {
+#ifdef TRY_DEBUG
+        std::cout << "###############the date is " << date << std::endl;
+#endif
         res = tbl->iter_traverse(date, time, place, event);
-        if (old_date != date)
+        if (res)
         {
-            write_date(file, date);
-            old_date = date;
+            if (old_date != date)
+            {
+                write_date(file, date);
+                old_date = date;
+            }
+
+            write_time_place_event(file, time, place, event);
         }
-        write_time_place_event(file, time, place, event);
+
     } while (res);
 }
 
@@ -431,4 +439,257 @@ void xcal_process(int argc, const std::vector<std::string> &argv)
     {
         std::cerr << "Not supported input" << std::endl;
     }
+}
+
+void read(const char *file, const char *ofile)
+{
+    std::string fileName = file;
+    std::ifstream inFile(fileName);
+    if (!inFile.is_open())
+    {
+        std::cerr << "Error: Unable to open the file." << std::endl;
+    }
+
+    Analyzer scanner;
+    Output_table ot;
+    CmdParser cp(&ot, &scanner);
+    Preprocessor_table pt;
+    PreParser pp(&pt, &scanner);
+    kw_punctuation kwp;
+    int offset;
+    ERROR_CODE status;
+    int boolean_res_logic = 0;
+    bool command_context = false;
+    while (!inFile.eof())
+    {
+        if (!scanner.scan_whitespace(inFile, offset))
+        {
+            inFile.seekg(-offset, std::ios::cur);
+        }
+        else
+        {
+            break;
+        }
+
+        status = scanner.scan_punctuation(inFile, kwp, offset);
+
+#ifdef TRY_DEBUG
+        DEBUG("status, offset %d, %d\n", (int)status, offset);
+#endif
+
+        if (status != A_FINE || offset != 1)
+        {
+            std::cerr << error_handler(status) << std::endl;
+            return;
+        }
+
+        inFile.seekg(-offset, std::ios::cur);
+        offset = 0;
+
+        // use switch later
+        if (kwp == kwa_not)
+        {
+            if (command_context == false)
+            {
+                bool ig_res = scanner.ignore(inFile, offset, '}');
+#ifdef TRY_DEBUG
+                DEBUG("ig_res, offset %d, %d\n", (int)ig_res, offset);
+#endif
+                if (!ig_res)
+                {
+                    std::cerr << error_handler(P_SCANNING_MISMATCHED) << std::endl;
+                    return;
+                }
+                inFile.seekg(-offset, std::ios::cur);
+                continue;
+            }
+            status = read_command(inFile, &scanner, &cp);
+
+#ifdef TRY_DEBUG
+            DEBUG("status, offset %d, %d\n", (int)status, offset);
+#endif
+            if (status != P_FINE)
+            {
+                std::cerr << error_handler(status) << std::endl;
+                return;
+            }
+        }
+        else if (kwp == kwd_dol)
+        {
+            status = read_logic(inFile, &scanner, &pp, boolean_res_logic);
+
+#ifdef TRY_DEBUG
+            DEBUG("status, offset %d, %d\n", (int)status, offset);
+#endif
+            if (status != P_FINE)
+            {
+                std::cerr << error_handler(status) << std::endl;
+                return;
+            }
+        }
+        else if (kwp == kwd_lcb && boolean_res_logic == 1)
+        {
+            boolean_res_logic = 0;
+            command_context = true;
+        }
+        else if (kwp == kwd_rcb)
+        {
+            command_context = false;
+        }
+    }
+    write_file_output(ofile, &ot);
+}
+
+// invoked by !
+ERROR_CODE read_command(std::ifstream &inFile, Analyzer *a, CmdParser *cp)
+{
+    kw_command kw;
+    int offset;
+    ERROR_CODE status;
+    Place p;
+    Event e;
+    bool res;
+    status = a->scan_command(inFile, kw, offset);
+
+#ifdef TRY_DEBUG
+    DEBUG("status, offset %d, %d\n", (int)status, offset);
+#endif
+
+    if (status != A_FINE || offset != 1)
+    {
+        std::cerr << error_handler(status) << std::endl;
+        return P_SCANNING_MISMATCHED;
+    }
+
+    inFile.seekg(-offset, std::ios::cur);
+
+    switch (kw)
+    {
+    case kwc_set:
+    {
+        status = cp->cmd_set(inFile, offset);
+        break;
+    }
+    case kwc_findset:
+    {
+        status = cp->cmd_findset(inFile, offset);
+        break;
+    }
+    case kwc_get:
+    {
+        status = cp->cmd_get(inFile, offset, &p, &e);
+        break;
+    }
+    case kwc_clear:
+    {
+        status = cp->cmd_clear(inFile, offset);
+        break;
+    }
+    case kwc_check:
+    {
+        status = cp->cmd_check(inFile, offset, res);
+        break;
+    }
+    default:
+        status = P_SCANNING_MISMATCHED;
+        break;
+    }
+    if (status != A_FINE || offset != 0)
+    {
+        std::cerr << error_handler(status) << std::endl;
+        return P_SCANNING_MISMATCHED;
+    }
+#ifdef TRY_DEBUG
+    DEBUG("END OF READ COMMAND\n");
+#endif
+    return status;
+}
+
+ERROR_CODE read_logic(std::ifstream &inFile, Analyzer *a, PreParser *pp, int &_res)
+{
+    kw_logic kw;
+    int offset;
+    ERROR_CODE status;
+    Place p;
+    Event e;
+    bool res;
+    status = a->scan_logic(inFile, kw, offset);
+
+#ifdef TRY_DEBUG
+    DEBUG("status, offset %d, %d\n", (int)status, offset);
+#endif
+
+    if (status != A_FINE || offset != 1)
+    {
+        std::cerr << error_handler(status) << std::endl;
+        return P_SCANNING_MISMATCHED;
+    }
+
+    inFile.seekg(-offset, std::ios::cur);
+
+    switch (kw)
+    {
+    case kwl_if:
+    {
+        status = pp->pre_if(inFile, offset, res); // offset =0
+        break;
+    }
+    case kwl_ifdef:
+    {
+        status = pp->pre_ifdef(inFile, offset, res); // offset =0
+        break;
+    }
+    case kwl_ifeq:
+    {
+        status = pp->pre_ifeq(inFile, offset, res); // offset =0
+        break;
+    }
+    case kwl_ifndef:
+    {
+        status = pp->pre_ifndef(inFile, offset, res); // offset =0
+        break;
+    }
+    case kwl_ifneq:
+    {
+        status = pp->pre_ifne(inFile, offset, res); // offset =0
+        break;
+    }
+    case kwl_else:
+    {
+        status = pp->pre_else(inFile, offset); // offset =0
+        break;
+    }
+    case kwl_define:
+    {
+        status = pp->pre_define(inFile, offset); // offset =0
+        break;
+    }
+    default:
+    {
+        status = P_SCANNING_MISMATCHED;
+        break;
+    }
+    }
+#ifdef TRY_DEBUG
+    DEBUG("status, offset %d, %d\n", (int)status, offset);
+#endif
+
+    if (status != A_FINE || offset != 0)
+    {
+        std::cerr << error_handler(status) << std::endl;
+        return P_SCANNING_MISMATCHED;
+    }
+
+    if (kw == kwl_define)
+    {
+        _res = -1;
+    }
+    else
+    {
+        _res = (int)res;
+    }
+#ifdef TRY_DEBUG
+    DEBUG("status, offset %d, %d\n", (int)status, offset);
+#endif
+    return status;
 }

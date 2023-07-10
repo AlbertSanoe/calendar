@@ -1,1 +1,18 @@
-  (  1991  -  3  -  4 12  : 21  : 13  , Libary , Reading_Some_Books );
+$ define A = 3;
+$ define B = 6;
+$ define AB = fasdl ;
+
+$ ifndef B
+{
+!SET(  1991  -  3  -  4 12  : 21  : 13  , Libary , Reading_Some_Book1 );
+!SET( 1991 - 3 - 4 13 : 21 : 13 , Libary , Reading_Some_Book2 );
+!SET( 1991 - 3 - 4 14 : 21 : 13 , Libary , Reading_Some_Book3 );
+
+}
+
+$ ifneq AB , 9
+{
+  !SET( 1991 - 3 - 4 15 : 21 : 13 , Libary , Reading_Some_Book4 );
+!SET( 1991 - 3 - 4 16 : 21 : 13 , Libary , Reading_Some_Book5 );
+!SET( 1991 - 3 - 4 10 : 21 : 13 , Libary , Reading_Some_Book6 );
+}

@@ -39,13 +39,15 @@ ERROR_CODE Analyzer::scan_pvarident(std::ifstream &inFile, std::string &ident, i
             break;
         }
     }
-
+#ifdef TRY_DEBUG
+    DEBUG("the ch after ident is %c\n", ch);
+#endif
     if (inFile.eof())
     {
         return A_FAILED_TO_READ;
     }
 
-    if (!IS_WHITESPACE_OR_ENDLINE(ch))
+    if (!IS_WHITESPACE_OR_ENDLINE(ch) && ch != ',')
     {
         return A_NOT_A_TYPE;
     }
@@ -100,7 +102,7 @@ ERROR_CODE Analyzer::scan_pvarval(std::ifstream &inFile, std::string &val, int &
     } while (std::isalnum(ch) || ch == '_');
 
     // Check if the current character is a semicolon
-    if (ch != ';'&&!IS_WHITESPACE_OR_ENDLINE(ch))
+    if (ch != ';' && !IS_WHITESPACE_OR_ENDLINE(ch))
     {
         return A_NOT_A_TYPE; // Expecting a semicolon at the end of the string
     }

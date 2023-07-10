@@ -96,6 +96,15 @@ ERROR_CODE Analyzer::scan_punctuation(std::ifstream &inFile, kw_punctuation &key
             break;
         }
 
+        if (word == "!" && std::isalpha(ch))
+        {
+            break;
+        }
+
+        if(word == "$"&& std::isalpha(ch)){
+            break;
+        }
+
         // If the character is a punctuation symbol, add it to the 'word' string
         if (std::ispunct(ch))
         {
