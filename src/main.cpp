@@ -30,10 +30,16 @@ int main(int argc, char *argv[])
             {
                 stringVec.push_back(std::string(argv[i]));
             }
-            xcal_process(argc-2,stringVec);
+            xcal_process(argc - 2, stringVec);
         }
-        else if (strcmp(argv[1], "xcc") == 0)
+        else if (strcmp(argv[1], "xcc") == 0 && argc == 4)
         {
+            std::vector<std::string> stringVec;
+            for (int i = 2; i < argc; i++)
+            {
+                stringVec.push_back(std::string(argv[i]));
+            }
+            xcc_process(argc - 2, stringVec);
         }
         else
         {

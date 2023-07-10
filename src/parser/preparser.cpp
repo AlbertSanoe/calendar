@@ -92,7 +92,10 @@ ERROR_CODE PreParser::pre_define(std::ifstream &inFile, int &offset)
     DEBUG("the ident is %s\n", ident.c_str());
     DEBUG("the val is %s\n", val.c_str());
 #endif
-
+    if(this->tbl->contains(ident)){
+        this->tbl->move(ident);
+    }
+    else
     this->tbl->insert(ident, val);
 
     return P_FINE;

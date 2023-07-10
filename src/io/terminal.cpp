@@ -441,7 +441,16 @@ void xcal_process(int argc, const std::vector<std::string> &argv)
     }
 }
 
-void read(const char *file, const char *ofile)
+void xcc_process(int argc, const std::vector<std::string> &argv){
+    if(argc==2){
+        read_write(argv[0].c_str(),argv[1].c_str());
+    }
+    else{
+        std::cerr << "Not supported input" << std::endl;
+    }
+}
+
+void read_write(const char *file, const char *ofile)
 {
     std::string fileName = file;
     std::ifstream inFile(fileName);

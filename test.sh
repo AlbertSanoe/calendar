@@ -1,0 +1,1 @@
+./bin/main xcc /home/su/Documents/Code/xcalendar/cache/hello.txt /home/su/Documents/Code/xcalendar/cache/hello_out.txt 

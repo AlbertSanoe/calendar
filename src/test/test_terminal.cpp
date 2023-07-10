@@ -54,5 +54,5 @@ void test_terminal2(){
     const char *output_file_path = "/home/su/Documents/Code/xcalendar/cache/output3.txt";
     const char *input="/home/su/Documents/Code/xcalendar/src/test/test_analyzer.txt";
 
-    read(input,output_file_path);
+    read_write(input,output_file_path);
 }
