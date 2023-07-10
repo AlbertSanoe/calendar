@@ -4,15 +4,17 @@
 #include "../include/cal.h"
 #include "../include/print.h"
 
+const char *output_file_path = "/home/su/Documents/Code/xcalendar/cache/output1.txt";
+
 void test_terminal1()
 {
-    write_arrangement_header(nullptr);
+    write_arrangement_header(output_file_path);
     Date xx = Date(1999, 12, 31, 0);
     Time t1= Time(11,12,33);
     Place p=Place("Saint German District");
     Event e=Event("Doing some examination");
-    write_date(nullptr,xx);
-    write_time_place_event(nullptr,t1,p,e);
+    write_date(output_file_path,xx);
+    write_time_place_event(output_file_path,t1,p,e);
 
     Date meetingDate = Date(2022, 8, 15, 0);
     Time startTime = Time(9, 0, 0);
@@ -21,9 +23,9 @@ void test_terminal1()
     Event meeting = Event("Project planning meeting");
 
     //outputfile_demo(meetingDate);
-    write_date(nullptr,meetingDate);
-    write_time_place_event(nullptr, startTime, location1, meeting);
-    write_time_place_event(nullptr, endTime, location1, Event("Meeting ends"));
+    write_date(output_file_path,meetingDate);
+    write_time_place_event(output_file_path, startTime, location1, meeting);
+    write_time_place_event(output_file_path, endTime, location1, Event("Meeting ends"));
 
         // Scenario 2: Birthday party
     Date partyDate = Date(2022, 9, 22, 0);
@@ -32,8 +34,8 @@ void test_terminal1()
     Event birthdayParty = Event("Alice's birthday party");
 
     //outputfile_demo(partyDate);
-    write_date(nullptr,partyDate);
-    write_time_place_event(nullptr, partyTime, location2, birthdayParty);
+    write_date(output_file_path,partyDate);
+    write_time_place_event(output_file_path, partyTime, location2, birthdayParty);
 
     // Scenario 3: Concert
     Date concertDate = Date(2022, 10, 5, 0);
@@ -43,7 +45,7 @@ void test_terminal1()
     Event concert = Event("Symphony Orchestra performance");
 
     //outputfile_demo(concertDate);
-    write_date(nullptr,concertDate);
-    write_time_place_event(nullptr, doorsOpen, location3, Event("Doors open"));
-    write_time_place_event(nullptr, concertStart, location3, concert);
+    write_date(output_file_path,concertDate);
+    write_time_place_event(output_file_path, doorsOpen, location3, Event("Doors open"));
+    write_time_place_event(output_file_path, concertStart, location3, concert);
 }

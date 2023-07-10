@@ -78,15 +78,18 @@ private:
     };
 
     std::map<Date_Time, Place_Event> table;
-
+    std::map<Date_Time,Place_Event>::iterator iter;
 public:
     void insert(const Date &dt, const Time &tm, const Place &pla, const Event &eve);
     bool get(const Date &dt, const Time &tm, Place &pla, Event &eve);
     bool contains(const Date &dt, const Time &tm);
-
     void move(const Date &dt, const Time &tm);
     bool empty() const;
     void clear();
+
+    void iter_init();
+    bool iter_traverse(Date &dt, Time &tm, Place &pla, Event &eve);
+
 };
 
 enum Output_Datatype

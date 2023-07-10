@@ -203,9 +203,6 @@ static const inline bool __is_leapyear(Year val)
 {
     if (val % 100 == 0)
     {
-        // #ifdef TRY_DEBUG
-        //         DEBUG("go to the branch: val % 100 == 0\n");
-        // #endif
         if (val % 400 == 0)
         {
             return true;
@@ -321,7 +318,7 @@ Date Date::get_today(Time *exact_time)
     DEBUG("the second value is %d\n", t_sec.tv_sec);
     DEBUG("the value of the date is %d, %d, %d, %d\n", ptr_time->tm_year, ptr_time->tm_mon, ptr_time->tm_mday, ptr_time->tm_wday);
 #endif
-    Date today = Date((Year)ptr_time->tm_year + 1900, (Month)(ptr_time->tm_mon + 1), (Day)ptr_time->tm_mday, (Weekday)ptr_time->tm_wday);
+    Date today = Date((Year)(ptr_time->tm_year + 1900), (Month)(ptr_time->tm_mon + 1), (Day)ptr_time->tm_mday, (Weekday)ptr_time->tm_wday);
     // tm_year calculates the differ value from now to 1900
     if (exact_time)
     {
@@ -330,6 +327,14 @@ Date Date::get_today(Time *exact_time)
         exact_time->second = (Second)ptr_time->tm_sec;
     }
     return today;
+}
+
+Year Date::get_currentyear(){
+    struct timeval t_sec;
+    int result = gettimeofday(&t_sec, nullptr);
+    struct tm *ptr_time;
+    ptr_time = localtime(&t_sec.tv_sec);
+    return Year(ptr_time->tm_year+1900);
 }
 
 static void __adjust_months(int *mm_ptr, int *before_ptr, int *after_ptr)
@@ -364,7 +369,6 @@ static void __adjust_months(int *mm_ptr, int *before_ptr, int *after_ptr)
 
 bool Calendar::has_header_on_month()
 {
-
     __adjust_months(&this->month, &this->before, &this->after);
     bool need_header;
 
@@ -394,7 +398,6 @@ bool Calendar::has_header_on_month()
             need_header = true;
         }
     }
-
     return need_header;
 }
 
@@ -562,6 +565,7 @@ static std::string __weekday_generate(int month_per_line)
     {
         wds += blank + blank;
         wds += wds_str;
+        // const std::string wds_str = "Su Mo Tu We Th Fr Sa";
     }
     return wds;
 }

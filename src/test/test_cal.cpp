@@ -18,7 +18,7 @@ void test_cal1()
 }
 
 
-void test_cal3()
+void test_cal2()
 {
     TEST_STARTFUNCTION;
     Month month = 6;
@@ -29,8 +29,6 @@ void test_cal3()
     TEST_WRAPPER(l, new_cal->has_header_on_month());
     TEST << "the result is " << l << std::endl;
     new_cal->generate();
-    Date datee=Date(2023,2,1,3);
-    TEST<<std::endl;
     std::cout<<new_cal->content<<std::endl;
     TEST_ENDFUNCTION;
 }

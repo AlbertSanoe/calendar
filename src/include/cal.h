@@ -22,12 +22,24 @@ typedef int Second; /* 0-60, leap seconds are applied to adjust human calendars 
 typedef int Minute; /* 0-59 */
 typedef int Hour;   /* 0-23 */
 
+// for print the whole month in format, like
+// example:                        1934
+//            July                 August              September
+//    Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa  Su Mo Tu We Th Fr Sa
+//              1  2  3  4                     1         1  2  3  4  5
+//     5  6  7  8  9 10 11   2  3  4  5  6  7  8   6  7  8  9 10 11 12
+//    12 13 14 15 16 17 18   9 10 11 12 13 14 15  13 14 15 16 17 18 19
+//    19 20 21 22 23 24 25  16 17 18 19 20 21 22  20 21 22 23 24 25 26
+//    26 27 28 29 30 31     23 24 25 26 27 38 29  27 28 29 30
+//                          30 31
+//
+//
 struct Monthline
 {
-    std::string yearline;
-    std::string monthline;
-    std::string weekline;
-    std::string dayline[6];
+    std::string yearline; // store the line of the year "1934"
+    std::string monthline; // store the line of the month 
+    std::string weekline;  // store the weekday line
+    std::string dayline[6]; // store the days
     Monthline();
 };
 
@@ -84,6 +96,7 @@ public:
     const bool is_leapyear();
     int get_daystamp();
     static Date get_today(Time *exact_time);
+    static Year get_currentyear();
 };
 
 class Calendar
@@ -94,24 +107,30 @@ private:
     int after;
     int before;
 
-    static Calendar *instance;
+    static Calendar *instance; // use the singleton design pattern
 
 private:
     Calendar() {}
 
 public:
+    // a vector that stores the monthline instances
     std::vector<Monthline> content;
+
+    //the function is to generate a month figure to display in terminal
     int month_generate(Date *const yy_mm_1, int row, int column, bool has_header);
     void generate();
 
 public:
-    bool has_header_on_month();
+    bool has_header_on_month(); // whether it is necessary to print the year
+
+    // get the unique instance
     static Calendar *get_cal(Month *month, Year *year, int *after, int *before);
+
     static Calendar *get_cal()
     {
         return Calendar::get_cal(nullptr, nullptr, nullptr, nullptr);
     }
-    std::vector<Monthline> get_content();
+    //std::vector<Monthline> get_content();
     Calendar(const Calendar &) = delete;
     Calendar &operator=(const Calendar &) = delete;
 };

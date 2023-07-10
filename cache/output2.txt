@@ -1,0 +1,8 @@
+#Arrangement#
+Date:	1999.12.31 Friday
+09:00:00	Conference Room A	Project planning meeting
+11:12:33	Saint German District	Doing some examination
+18:30:00	Local Park	Alice's birthday party
+19:00:00	City Concert Hall	Symphony Orchestra performance
+20:00:00	City Concert Hall	Symphony Orchestra performance
+20:00:00	City Concert Hall	Symphony Orchestra performance

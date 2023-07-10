@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "Makefile": "makefile",
-        "*.tcc": "cpp",
-        "compare": "cpp",
-        "type_traits": "cpp"
-    }
-}

@@ -4,7 +4,7 @@
 int main(){
     TEST_STARTFUNCTION;
 
-    test_oparser();
+    test_otable2();
     TEST_ENDFUNCTION;
     return 0;
 }
